@@ -48,3 +48,26 @@ export async function enviarAcao(formData: FormData) {
   revalidatePath("/app/acoes", "layout");
   redirect("/meu/acoes?ok=1");
 }
+
+/** Presença no DDS, confirmada pelo próprio trabalhador. */
+export async function confirmarDds(formData: FormData) {
+  await requireOrg();
+  const supabase = await createClient();
+  const aparelho = (await headers()).get("user-agent");
+  const { data, error } = await supabase.rpc("confirm_dds", { p_talk: String(formData.get("id")), p_device: aparelho });
+  if (error || !data) {
+    redirect(`/meu/dds?erro=${encodeURIComponent(error?.message ?? "Este DDS já foi encerrado.")}`);
+  }
+  revalidatePath("/meu", "layout");
+  redirect("/meu/dds?ok=1");
+}
+
+/** "Li e entendi" num comunicado. */
+export async function lerComunicado(formData: FormData) {
+  const org = await requireOrg();
+  const supabase = await createClient();
+  await supabase
+    .from("announcement_reads")
+    .upsert({ announcement_id: String(formData.get("id")), organization_id: org.id }, { ignoreDuplicates: true });
+  revalidatePath("/meu");
+}

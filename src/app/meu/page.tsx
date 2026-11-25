@@ -3,6 +3,8 @@ import { dataBR, diasAte } from "@/lib/datas";
 import { meusDados } from "@/lib/meu";
 import { RESULTADOS } from "@/lib/saude";
 import { createClient } from "@/lib/supabase/server";
+import { lerComunicado } from "./actions";
+import { hoje } from "@/lib/datas";
 
 export default async function MeuInicio() {
   const { trabalhador, entregas, obrigatorios, asos } = await meusDados();
@@ -15,6 +17,18 @@ export default async function MeuInicio() {
     .select("id", { count: "exact", head: true })
     .eq("worker_id", trabalhador.id)
     .is("signed_at", null);
+  const [{ data: comunicados }, { data: lidos }, { count: ddsAbertos }] = await Promise.all([
+    supabase
+      .from("announcements")
+      .select("id, title, body, expires_on")
+      .or(`expires_on.is.null,expires_on.gte.${hoje()}`)
+      .order("created_at", { ascending: false })
+      .limit(10),
+    supabase.from("announcement_reads").select("announcement_id"),
+    supabase.from("dds_talks").select("id", { count: "exact", head: true }).eq("status", "aberto"),
+  ]);
+  const jaLidos = new Set((lidos ?? []).map((l) => l.announcement_id));
+  const novos = (comunicados ?? []).filter((c) => !jaLidos.has(c.id));
 
   return (
     <div className="space-y-3">
@@ -24,6 +38,18 @@ export default async function MeuInicio() {
         {trabalhador.sectors ? ` · ${trabalhador.sectors.name}` : ""}
       </p>
 
+      {novos.map((c) => (
+        <div key={c.id} className="rounded-lg border border-sky-300 bg-sky-50 p-4">
+          <p className="text-xs font-medium uppercase text-sky-800">Comunicado</p>
+          <p className="font-semibold">{c.title}</p>
+          <p className="mt-1 whitespace-pre-line text-sm">{c.body}</p>
+          <form action={lerComunicado} className="mt-2">
+            <input type="hidden" name="id" value={c.id} />
+            <button className="btn-ghost">Li e entendi</button>
+          </form>
+        </div>
+      ))}
+
       <Link href="/meu/relatar" className="block rounded-lg bg-emerald-700 p-4 text-white">
         <p className="font-semibold">Relatar desvio ou quase acidente</p>
         <p className="text-sm text-emerald-50">Leva menos de um minuto, com foto</p>
@@ -32,6 +58,16 @@ export default async function MeuInicio() {
       <Link href="/meu/apr" className={`block rounded-lg border p-4 ${assinar ? "border-amber-400 bg-amber-50" : "border-slate-200 bg-white"}`}>
         <p className="font-semibold">APR e PT</p>
         <p className="text-sm">{assinar ? `${assinar} assinatura(s) esperando por você` : "Análise de risco e permissão de trabalho"}</p>
+      </Link>
+
+      <Link href="/meu/dds" className={`block rounded-lg border p-4 ${ddsAbertos ? "border-amber-400 bg-amber-50" : "border-slate-200 bg-white"}`}>
+        <p className="font-semibold">DDS</p>
+        <p className="text-sm">{ddsAbertos ? "Confirme a presença no DDS de hoje" : "Diálogos de segurança de que você participou"}</p>
+      </Link>
+
+      <Link href="/meu/documentos" className="block rounded-lg border border-slate-200 bg-white p-4">
+        <p className="font-semibold">Documentos</p>
+        <p className="text-sm">Procedimentos e programas de segurança</p>
       </Link>
 
       <Link href="/meu/inspecoes" className="block rounded-lg border border-slate-200 bg-white p-4">
