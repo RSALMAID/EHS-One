@@ -16,9 +16,9 @@ export const NAV: NavGroup[] = [
   {
     title: "Cadastros",
     items: [
-      { label: "Empresa e unidades", phase: "MVP" },
-      { label: "Setores", phase: "MVP" },
-      { label: "Cargos e atividades", phase: "MVP" },
+      { label: "Empresa e unidades", href: "/app/empresa", phase: "MVP" },
+      { label: "Setores", href: "/app/setores", phase: "MVP" },
+      { label: "Cargos e funções", href: "/app/cargos", phase: "MVP" },
       { label: "Trabalhadores", href: "/app/trabalhadores", phase: "MVP" },
       { label: "Terceiros", phase: "V2" },
     ],
