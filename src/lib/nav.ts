@@ -28,6 +28,8 @@ export const NAV: NavGroup[] = [
     items: [
       { label: "GRO/PGR", href: "/app/pgr", phase: "MVP", module: "pgr" },
       { label: "Mapa de riscos", href: "/app/pgr/mapa", phase: "MVP", module: "pgr" },
+      { label: "Higiene ocupacional", href: "/app/higiene", phase: "MVP", module: "higiene" },
+      { label: "Meio ambiente", href: "/app/ambiente", phase: "MVP", module: "meio_ambiente" },
       { label: "Ergonomia", phase: "V2", module: "higiene" },
       { label: "Requisitos legais", phase: "V2", module: "requisitos_legais" },
     ],
