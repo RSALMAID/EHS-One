@@ -28,7 +28,7 @@ export async function requireOrg(): Promise<CurrentOrg> {
   } = await supabase.auth.getUser();
   if (!user) redirect("/entrar");
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("memberships")
     .select("role, organizations(id, name, plan, trial_ends_at)")
     .eq("user_id", user.id)
@@ -40,6 +40,17 @@ export async function requireOrg(): Promise<CurrentOrg> {
     | { id: string; name: string; plan: string; trial_ends_at: string }
     | null
     | undefined;
+  if (error) {
+    // Sem isto, uma falha de permissão parecia "sem empresa" e o cadastro
+    // voltava em loop para /onboarding.
+    console.error("Falha ao ler a empresa do usuário:", error);
+    redirect(
+      `/onboarding?erro=${encodeURIComponent(
+        `O banco recusou a leitura da sua empresa (${error.message}). ` +
+          "Rode o arquivo supabase/migrations/0002_permissoes.sql no SQL Editor do Supabase.",
+      )}`,
+    );
+  }
   if (!data || !org) redirect("/onboarding");
 
   return {

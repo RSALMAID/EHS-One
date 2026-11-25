@@ -13,7 +13,10 @@ export async function criarEmpresa(formData: FormData) {
     p_employee_count: Number.isFinite(funcionarios) && funcionarios > 0 ? funcionarios : null,
   });
   if (error) {
-    redirect(`/onboarding?erro=${encodeURIComponent("Não foi possível criar a empresa.")}`);
+    console.error("Falha ao criar a empresa:", error);
+    redirect(
+      `/onboarding?erro=${encodeURIComponent(`Não foi possível criar a empresa: ${error.message}`)}`,
+    );
   }
   redirect("/app");
 }
