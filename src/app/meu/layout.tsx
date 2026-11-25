@@ -4,8 +4,9 @@ import { ehEquipe, requireOrg } from "@/lib/org";
 
 const ABAS = [
   { href: "/meu", label: "Início" },
+  { href: "/meu/acoes", label: "Ações" },
   { href: "/meu/epis", label: "EPIs" },
-  { href: "/meu/treinamentos", label: "Treinamentos" },
+  { href: "/meu/treinamentos", label: "Treinos" },
   { href: "/meu/saude", label: "Saúde" },
 ];
 
@@ -40,7 +41,7 @@ export default async function MeuLayout({ children }: { children: React.ReactNod
         )}
       </main>
       <nav className="fixed inset-x-0 bottom-0 border-t border-slate-200 bg-white">
-        <ul className="mx-auto grid max-w-lg grid-cols-4 text-center text-xs">
+        <ul className="mx-auto grid max-w-lg grid-cols-5 text-center text-xs">
           {ABAS.map((a) => (
             <li key={a.href}>
               <Link href={a.href} className="block py-3 font-medium text-slate-700 active:bg-slate-100">

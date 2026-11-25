@@ -17,6 +17,11 @@ export default async function MeuInicio() {
         {trabalhador.sectors ? ` · ${trabalhador.sectors.name}` : ""}
       </p>
 
+      <Link href="/meu/acoes" className="block rounded-lg border border-slate-200 bg-white p-4">
+        <p className="font-semibold">Minhas ações</p>
+        <p className="text-sm">Ações do plano de ação em que você é o responsável</p>
+      </Link>
+
       <Link href="/meu/epis" className={`block rounded-lg border p-4 ${aConfirmar ? "border-amber-400 bg-amber-50" : "border-slate-200 bg-white"}`}>
         <p className="font-semibold">EPIs</p>
         <p className="text-sm">
