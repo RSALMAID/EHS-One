@@ -17,6 +17,11 @@ export default async function MeuInicio() {
         {trabalhador.sectors ? ` · ${trabalhador.sectors.name}` : ""}
       </p>
 
+      <Link href="/meu/relatar" className="block rounded-lg bg-emerald-700 p-4 text-white">
+        <p className="font-semibold">Relatar desvio ou quase acidente</p>
+        <p className="text-sm text-emerald-50">Leva menos de um minuto, com foto</p>
+      </Link>
+
       <Link href="/meu/acoes" className="block rounded-lg border border-slate-200 bg-white p-4">
         <p className="font-semibold">Minhas ações</p>
         <p className="text-sm">Ações do plano de ação em que você é o responsável</p>

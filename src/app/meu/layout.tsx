@@ -4,9 +4,9 @@ import { ehEquipe, requireOrg } from "@/lib/org";
 
 const ABAS = [
   { href: "/meu", label: "Início" },
+  { href: "/meu/relatar", label: "Relatar" },
   { href: "/meu/acoes", label: "Ações" },
   { href: "/meu/epis", label: "EPIs" },
-  { href: "/meu/treinamentos", label: "Treinos" },
   { href: "/meu/saude", label: "Saúde" },
 ];
 
