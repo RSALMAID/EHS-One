@@ -19,5 +19,5 @@ export async function hashCodigo(codigo: string): Promise<string> {
 
 /** Caminhos que ficam abertos mesmo com a trava ligada. */
 export function caminhoLivre(path: string): boolean {
-  return path === "/acesso" || path === "/configuracao";
+  return path === "/acesso" || path === "/configuracao" || path === "/manifest.webmanifest" || path.startsWith("/icone/");
 }

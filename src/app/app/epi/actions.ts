@@ -105,12 +105,24 @@ export async function registrarEntrega(formData: FormData) {
   const trabalhador = campo(formData, "trabalhador");
   const item = campo(formData, "item");
   const assinatura = campo(formData, "assinatura");
-  if (!trabalhador || !item || !assinatura || formData.get("declaro") !== "on") {
+  const pelo_app = formData.get("modo") === "app";
+  if (!trabalhador || !item) {
+    redirect(`${path}?erro=${encodeURIComponent("Escolha o trabalhador e o EPI.")}`);
+  }
+  if (!pelo_app && (!assinatura || formData.get("declaro") !== "on")) {
     redirect(
-      `${path}?erro=${encodeURIComponent("Escolha trabalhador e EPI, peça para o trabalhador digitar o nome e marcar a declaração.")}`,
+      `${path}?erro=${encodeURIComponent("Peça para o trabalhador digitar o nome e marcar a declaração, ou escolha a confirmação pelo celular.")}`,
     );
   }
   const supabase = await createClient();
+  if (pelo_app) {
+    const { data: w } = await supabase.from("workers").select("user_id").eq("id", trabalhador).maybeSingle();
+    if (!w?.user_id) {
+      redirect(
+        `${path}?erro=${encodeURIComponent("Este trabalhador ainda não tem acesso ao Meu EHS. Convide-o em Trabalhadores ou use a assinatura por nome.")}`,
+      );
+    }
+  }
   const { error } = await supabase.from("ppe_deliveries").insert({
     organization_id: org.id,
     worker_id: trabalhador,
@@ -118,7 +130,7 @@ export async function registrarEntrega(formData: FormData) {
     quantity: inteiro(formData, "quantidade") ?? 1,
     delivered_on: campo(formData, "data") ?? undefined,
     reason: String(formData.get("motivo") ?? "primeira"),
-    signature_name: assinatura,
+    signature_name: pelo_app ? null : assinatura,
   });
   seErro(path, error);
   revalidatePath(PATH, "layout");

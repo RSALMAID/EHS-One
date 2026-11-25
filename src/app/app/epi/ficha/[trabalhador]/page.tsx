@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Assinatura } from "@/lib/assinatura";
 import { notFound } from "next/navigation";
 import { BotaoImprimir } from "@/components/BotaoImprimir";
 import { dataBR, MOTIVOS } from "@/lib/epi";
@@ -13,7 +14,8 @@ type Linha = {
   quantity: number;
   reason: string;
   ca_number: string | null;
-  signature_name: string;
+  signature_name: string | null;
+  confirmed_at: string | null;
   signed_at: string;
   ppe_items: { name: string } | null;
 };
@@ -30,7 +32,7 @@ export default async function FichaEpiPage({ params }: Props) {
       .maybeSingle(),
     supabase
       .from("ppe_deliveries")
-      .select("id, delivered_on, quantity, reason, ca_number, signature_name, signed_at, ppe_items(name)")
+      .select("id, delivered_on, quantity, reason, ca_number, signature_name, confirmed_at, signed_at, ppe_items(name)")
       .eq("worker_id", trabalhador)
       .order("delivered_on"),
   ]);
@@ -63,7 +65,7 @@ export default async function FichaEpiPage({ params }: Props) {
       <table className="mt-4 w-full border-collapse text-left text-xs">
         <thead>
           <tr className="border-b border-slate-300 bg-slate-100">
-            {["Data", "EPI", "CA", "Qtd.", "Motivo", "Assinatura (nome digitado)", "Assinado em"].map((h) => (
+            {["Data", "EPI", "CA", "Qtd.", "Motivo", "Assinatura", "Registrado em"].map((h) => (
               <th key={h} className="px-2 py-1 font-semibold">{h}</th>
             ))}
           </tr>
@@ -76,7 +78,7 @@ export default async function FichaEpiPage({ params }: Props) {
               <td className="px-2 py-1">{e.ca_number ?? "—"}</td>
               <td className="px-2 py-1">{e.quantity}</td>
               <td className="px-2 py-1">{MOTIVOS[e.reason] ?? e.reason}</td>
-              <td className="px-2 py-1">{e.signature_name}</td>
+              <td className="px-2 py-1"><Assinatura e={e} /></td>
               <td className="px-2 py-1">{new Date(e.signed_at).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}</td>
             </tr>
           ))}

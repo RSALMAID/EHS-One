@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Assinatura } from "@/lib/assinatura";
 import { Erro } from "@/components/Erro";
 import { dataBR, hoje, MOTIVOS } from "@/lib/epi";
 import { requireOrg } from "@/lib/org";
@@ -12,7 +13,8 @@ type Linha = {
   delivered_on: string;
   quantity: number;
   reason: string;
-  signature_name: string;
+  signature_name: string | null;
+  confirmed_at: string | null;
   ppe_items: { name: string } | null;
   workers: { id: string; full_name: string } | null;
 };
@@ -31,7 +33,7 @@ export default async function EntregasPage({ searchParams }: Props) {
       .order("name"),
     supabase
       .from("ppe_deliveries")
-      .select("id, delivered_on, quantity, reason, signature_name, ppe_items(name), workers(id, full_name)")
+      .select("id, delivered_on, quantity, reason, signature_name, confirmed_at, ppe_items(name), workers(id, full_name)")
       .eq("organization_id", org.id)
       .order("created_at", { ascending: false })
       .limit(50),
@@ -85,12 +87,21 @@ export default async function EntregasPage({ searchParams }: Props) {
             ))}
           </select>
         </label>
+        <fieldset className="grid gap-1 text-sm sm:col-span-2">
+          <legend className="mb-1">Como o trabalhador assina</legend>
+          <label className="flex items-center gap-2">
+            <input type="radio" name="modo" value="nome" defaultChecked /> Digita o nome e marca a declaração aqui
+          </label>
+          <label className="flex items-center gap-2">
+            <input type="radio" name="modo" value="app" /> Confirma depois no próprio celular (Meu EHS)
+          </label>
+        </fieldset>
         <label className="text-sm">
           Assinatura: nome completo digitado pelo trabalhador
-          <input name="assinatura" required className="input mt-1" />
+          <input name="assinatura" className="input mt-1" />
         </label>
         <label className="flex items-start gap-2 text-sm sm:col-span-2">
-          <input type="checkbox" name="declaro" required className="mt-1" />
+          <input type="checkbox" name="declaro" className="mt-1" />
           Declaro que recebi o EPI acima, gratuitamente, fui orientado sobre o uso correto, guarda e conservação, e
           me comprometo a usá-lo e a comunicar qualquer dano (NR-6).
         </label>
@@ -108,7 +119,7 @@ export default async function EntregasPage({ searchParams }: Props) {
               {e.workers ? (
                 <Link href={`/app/epi/ficha/${e.workers.id}`} className="underline">{e.workers.full_name}</Link>
               ) : "—"}{" "}
-              · {e.ppe_items?.name} · {e.quantity} un. · {MOTIVOS[e.reason] ?? e.reason} · assinado: {e.signature_name}
+              · {e.ppe_items?.name} · {e.quantity} un. · {MOTIVOS[e.reason] ?? e.reason} · <Assinatura e={e} />
             </span>
             <form action={excluirEntrega}>
               <input type="hidden" name="id" value={e.id} />
