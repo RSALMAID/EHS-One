@@ -26,8 +26,8 @@ export const NAV: NavGroup[] = [
   {
     title: "Riscos",
     items: [
-      { label: "GRO/PGR", phase: "MVP" },
-      { label: "Mapa de riscos", phase: "V2" },
+      { label: "GRO/PGR", href: "/app/pgr", phase: "MVP" },
+      { label: "Mapa de riscos", href: "/app/pgr/mapa", phase: "MVP" },
       { label: "Ergonomia", phase: "V2" },
       { label: "Requisitos legais", phase: "V2" },
     ],

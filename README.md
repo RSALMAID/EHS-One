@@ -20,7 +20,7 @@ etapa de assinatura.
 
 1. Crie um projeto gratuito em [supabase.com](https://supabase.com).
 2. No SQL Editor do Supabase, rode `supabase/migrations/0001_multiempresa.sql` e depois
-   `supabase/migrations/0002_permissoes.sql`
+   `supabase/migrations/0002_permissoes.sql` e as demais `0003_…` em ordem
    (ou `supabase db push` com a CLI).
 3. Copie `.env.example` para `.env.local` e preencha a URL e a chave `anon` do projeto.
 4. `npm install` e `npm run dev`, depois abra http://localhost:3000.
