@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Erro } from "@/components/Erro";
 import { requireOrg } from "@/lib/org";
 import { createClient } from "@/lib/supabase/server";
@@ -83,7 +84,10 @@ export default async function TrabalhadoresPage({ searchParams }: Props) {
                 · {t.is_contractor ? "Terceiro" : "Próprio"}
                 {t.email ? ` · ${t.email}` : ""}
                 {t.active ? "" : " · inativo"}
-              </span>
+              </span>{" "}
+              <Link href={`/app/epi/ficha/${t.id}`} className="text-sm font-normal text-emerald-700 underline">
+                Ficha de EPI
+              </Link>
             </p>
             <form action={atualizarVinculo} className="mt-2 grid gap-3 sm:grid-cols-[1fr_1fr_auto_auto] sm:items-end">
               <input type="hidden" name="id" value={t.id} />

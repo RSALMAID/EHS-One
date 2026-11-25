@@ -2,7 +2,7 @@ import Link from "next/link";
 import { requireOrg } from "@/lib/org";
 import { classificar, TIPOS_RISCO } from "@/lib/risco";
 import { createClient } from "@/lib/supabase/server";
-import { BotaoImprimir } from "../inventario/BotaoImprimir";
+import { BotaoImprimir } from "@/components/BotaoImprimir";
 
 // Cores convencionais dos mapas de risco por grupo.
 const COR_TIPO: Record<string, string> = {
