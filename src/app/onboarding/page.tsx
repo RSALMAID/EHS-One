@@ -1,9 +1,22 @@
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 import { criarEmpresa } from "./actions";
 
 type Props = { searchParams: Promise<{ erro?: string }> };
 
 export default async function OnboardingPage({ searchParams }: Props) {
   const { erro } = await searchParams;
+
+  // Quem já tem empresa vai direto para o sistema, sem criar outra.
+  if (!erro) {
+    const supabase = await createClient();
+    const { data: membro } = await supabase
+      .from("memberships")
+      .select("organization_id")
+      .limit(1)
+      .maybeSingle();
+    if (membro) redirect("/app");
+  }
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-4">
       <p className="text-sm font-medium text-emerald-700">Passo 1 de 2</p>
