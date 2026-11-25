@@ -47,7 +47,9 @@ export const NAV: NavGroup[] = [
   {
     title: "Gestão",
     items: [
-      { label: "Documentos", phase: "MVP", module: "documentos" },
+      { label: "DDS", href: "/app/dds", phase: "MVP", module: "dds" },
+      { label: "Comunicados", href: "/app/comunicados", phase: "MVP", module: "dds" },
+      { label: "Documentos", href: "/app/documentos", phase: "MVP", module: "documentos" },
       { label: "Indicadores", phase: "V2", module: "dashboard" },
       { label: "Configurações", phase: "MVP" },
     ],
