@@ -3,6 +3,16 @@
 -- 2) Convite por e-mail que liga a conta à ficha do trabalhador
 -- 3) Dados pessoais: o trabalhador vê só o que é dele
 -- 4) Confirmação de recebimento de EPI pelo próprio trabalhador
+--
+-- Pode rodar mais de uma vez: se já foi rodado neste banco, não faz nada.
+
+do $migracao$
+begin
+  if to_regclass('public.modules') is not null then
+    raise notice 'Já rodado antes: nada a fazer.';
+    return;
+  end if;
+  execute $sql$
 
 -- ---------------------------------------------------------------------------
 -- 1. Módulos e planos
@@ -214,3 +224,8 @@ grant execute on function public.confirm_ppe_delivery(uuid, text) to authenticat
 
 grant execute on function public.enabled_modules(uuid), public.has_module(uuid, text),
   public.is_staff(uuid), public.owns_worker(uuid) to authenticated;
+
+  $sql$;
+end $migracao$;
+
+select '0007: pronto no banco' as resultado where to_regclass('public.modules') is not null;

@@ -39,6 +39,8 @@ export const NAV: NavGroup[] = [
       { label: "Treinamentos", href: "/app/treinamentos", phase: "MVP", module: "treinamentos" },
       { label: "Saúde ocupacional", href: "/app/saude", phase: "MVP", module: "saude" },
       { label: "Inspeções e checklists", phase: "MVP", module: "inspecoes" },
+      { label: "APR digital", href: "/app/apr", phase: "MVP", module: "apr_pt" },
+      { label: "Permissão de trabalho", href: "/app/pt", phase: "MVP", module: "apr_pt" },
       { label: "Eventos e desvios", href: "/app/eventos", phase: "MVP", module: "eventos" },
     ],
   },
