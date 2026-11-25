@@ -7,7 +7,7 @@
 
 do $migracao$
 begin
-  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'inspections' and column_name = 'photo_path') then
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'inspection_answers' and column_name = 'photo_path') then
     raise notice 'Já rodado antes: nada a fazer.';
     return;
   end if;
@@ -246,4 +246,4 @@ grant execute on function public.inspection_same_org_check(), public.can_edit_in
   $sql$;
 end $migracao$;
 
-select '0011: pronto no banco' as resultado where exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'inspections' and column_name = 'photo_path');
+select '0011: pronto no banco' as resultado where exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'inspection_answers' and column_name = 'photo_path');
