@@ -2,6 +2,16 @@
 -- Um plano reúne várias ações. Cada ação tem responsável, prazo, evidências
 -- (texto e arquivos) e verificação de eficácia. Ações criadas pelos módulos
 -- sem plano entram sozinhas num plano da mesma origem.
+--
+-- Pode rodar mais de uma vez: se já foi rodado neste banco, não faz nada.
+
+do $migracao$
+begin
+  if to_regclass('public.action_plans') is not null then
+    raise notice 'Já rodado antes: nada a fazer.';
+    return;
+  end if;
+  execute $sql$
 
 create type public.plan_status as enum ('aberto', 'em_andamento', 'concluido', 'cancelado');
 
@@ -190,3 +200,8 @@ create policy evidencias_read on storage.objects for select to authenticated
   using (bucket_id = 'evidencias' and public.is_member(((storage.foldername(name))[1])::uuid));
 create policy evidencias_write on storage.objects for insert to authenticated
   with check (bucket_id = 'evidencias' and public.is_member(((storage.foldername(name))[1])::uuid));
+
+  $sql$;
+end $migracao$;
+
+select '0008: pronto no banco' as resultado where to_regclass('public.action_plans') is not null;

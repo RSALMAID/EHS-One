@@ -2,6 +2,16 @@
 -- APR: etapas da tarefa com perigo, risco, nota 5×5 e controles; participantes assinam.
 -- PT: permissão de trabalho por tipo (altura, quente, espaço confinado…), checklist,
 -- liberação pela equipe, assinaturas e encerramento.
+--
+-- Pode rodar mais de uma vez: se já foi rodado neste banco, não faz nada.
+
+do $migracao$
+begin
+  if to_regclass('public.aprs') is not null then
+    raise notice 'Já rodado antes: nada a fazer.';
+    return;
+  end if;
+  execute $sql$
 
 create type public.apr_status as enum ('rascunho', 'aguardando_aprovacao', 'aprovada', 'reprovada', 'encerrada');
 create type public.permit_kind as enum ('altura', 'espaco_confinado', 'quente', 'eletrica', 'escavacao', 'icamento', 'geral');
@@ -229,3 +239,8 @@ returns table (id uuid, full_name text) language sql stable security definer set
 $$;
 revoke all on function public.worker_directory(uuid) from public, anon;
 grant execute on function public.worker_directory(uuid) to authenticated;
+
+  $sql$;
+end $migracao$;
+
+select '0010: pronto no banco' as resultado where to_regclass('public.aprs') is not null;

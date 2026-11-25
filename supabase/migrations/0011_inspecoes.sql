@@ -2,6 +2,16 @@
 -- Modelos de checklist (Gestão); inspeções feitas pela equipe ou pelo trabalhador
 -- no celular (Meu EHS), com foto por item; ao concluir, cada "não conforme" vira
 -- ação num plano de ação próprio da inspeção.
+--
+-- Pode rodar mais de uma vez: se já foi rodado neste banco, não faz nada.
+
+do $migracao$
+begin
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'inspections' and column_name = 'photo_path') then
+    raise notice 'Já rodado antes: nada a fazer.';
+    return;
+  end if;
+  execute $sql$
 
 -- Se o script antigo de inspeções (0007_inspecoes.sql, de uma versão anterior) já foi
 -- rodado neste banco, atualiza as tabelas dele em vez de dar erro, mantendo os dados.
@@ -232,3 +242,8 @@ revoke all on function public.conclude_inspection(uuid) from public, anon;
 grant execute on function public.conclude_inspection(uuid) to authenticated;
 grant execute on function public.inspection_same_org_check(), public.can_edit_inspection(uuid),
   public.can_see_inspection(uuid) to authenticated;
+
+  $sql$;
+end $migracao$;
+
+select '0011: pronto no banco' as resultado where exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'inspections' and column_name = 'photo_path');

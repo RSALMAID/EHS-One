@@ -2,6 +2,16 @@
 -- Acidentes, incidentes, quase acidentes, eventos ambientais e desvios numa tabela só.
 -- Classificação pela matriz 5×5 (potencial), investigação com árvore de causas,
 -- 5 porquês ou Ishikawa (6M); cada causa raiz vira ação no plano do evento.
+--
+-- Pode rodar mais de uma vez: se já foi rodado neste banco, não faz nada.
+
+do $migracao$
+begin
+  if to_regclass('public.events') is not null then
+    raise notice 'Já rodado antes: nada a fazer.';
+    return;
+  end if;
+  execute $sql$
 
 create type public.event_kind as enum (
   'acidente_com_afastamento', 'acidente_sem_afastamento', 'primeiros_socorros',
@@ -165,3 +175,8 @@ create policy event_causes_all on public.event_causes for all
   with check (public.has_role(organization_id, array['proprietario','admin_ehs','gestor']::public.member_role[]));
 
 grant execute on function public.event_same_org_check() to authenticated;
+
+  $sql$;
+end $migracao$;
+
+select '0009: pronto no banco' as resultado where to_regclass('public.events') is not null;
