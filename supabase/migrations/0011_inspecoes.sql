@@ -3,7 +3,33 @@
 -- no celular (Meu EHS), com foto por item; ao concluir, cada "não conforme" vira
 -- ação num plano de ação próprio da inspeção.
 
-create table public.checklist_templates (
+-- Se o script antigo de inspeções (0007_inspecoes.sql, de uma versão anterior) já foi
+-- rodado neste banco, atualiza as tabelas dele em vez de dar erro, mantendo os dados.
+do $$
+declare t text;
+begin
+  if to_regclass('public.inspections') is not null and not exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public' and table_name = 'inspections' and column_name = 'number') then
+    alter table public.inspections add column number integer, add column location text;
+    update public.inspections i set number = r.n
+    from (select id, row_number() over (partition by organization_id order by created_at) as n
+          from public.inspections) r
+    where r.id = i.id;
+    alter table public.inspections alter column number set not null;
+    alter table public.inspections add constraint inspections_organization_id_number_key unique (organization_id, number);
+    alter table public.inspection_answers add column photo_path text, add column photo_name text;
+    foreach t in array array['checklist_templates', 'checklist_items', 'inspections', 'inspection_answers'] loop
+      execute format('drop policy if exists %1$s_select on public.%1$s;
+                      drop policy if exists %1$s_write on public.%1$s;
+                      drop trigger if exists %1$s_same_org on public.%1$s;
+                      drop trigger if exists %1$s_touch on public.%1$s;
+                      drop trigger if exists %1$s_audit on public.%1$s;', t);
+    end loop;
+  end if;
+end $$;
+
+create table if not exists public.checklist_templates (
   id               uuid primary key default gen_random_uuid(),
   organization_id  uuid not null references public.organizations(id) on delete cascade,
   name             text not null check (length(trim(name)) > 0),
@@ -13,7 +39,7 @@ create table public.checklist_templates (
   updated_at       timestamptz not null default now()
 );
 
-create table public.checklist_items (
+create table if not exists public.checklist_items (
   id               uuid primary key default gen_random_uuid(),
   organization_id  uuid not null references public.organizations(id) on delete cascade,
   template_id      uuid not null references public.checklist_templates(id) on delete cascade,
@@ -22,9 +48,9 @@ create table public.checklist_items (
   created_at       timestamptz not null default now(),
   updated_at       timestamptz not null default now()
 );
-create index checklist_items_template_idx on public.checklist_items(template_id, position);
+create index if not exists checklist_items_template_idx on public.checklist_items(template_id, position);
 
-create table public.inspections (
+create table if not exists public.inspections (
   id               uuid primary key default gen_random_uuid(),
   organization_id  uuid not null references public.organizations(id) on delete cascade,
   number           integer not null,
@@ -41,11 +67,11 @@ create table public.inspections (
   updated_at       timestamptz not null default now(),
   unique (organization_id, number)
 );
-create index inspections_org_idx on public.inspections(organization_id, inspected_on desc);
+create index if not exists inspections_org_idx on public.inspections(organization_id, inspected_on desc);
 create trigger inspections_number before insert on public.inspections
   for each row execute function public.next_doc_number();
 
-create table public.inspection_answers (
+create table if not exists public.inspection_answers (
   id               uuid primary key default gen_random_uuid(),
   organization_id  uuid not null references public.organizations(id) on delete cascade,
   inspection_id    uuid not null references public.inspections(id) on delete cascade,
