@@ -5,26 +5,9 @@ export const MOTIVOS: Record<string, string> = {
   dano: "Dano",
 };
 
-const DIA = 86_400_000;
+import { dataBR, diasAte, somarDias } from "./datas";
 
-/** Data de hoje (YYYY-MM-DD) no fuso de Brasília. */
-export function hoje(): string {
-  return new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" });
-}
-
-export function diasAte(data: string): number {
-  return Math.round((Date.parse(data) - Date.parse(hoje())) / DIA);
-}
-
-export function somarDias(data: string, dias: number): string {
-  return new Date(Date.parse(data) + dias * DIA).toISOString().slice(0, 10);
-}
-
-export function dataBR(data: string | null): string {
-  if (!data) return "—";
-  const [a, m, d] = data.slice(0, 10).split("-");
-  return `${d}/${m}/${a}`;
-}
+export { dataBR, diasAte, hoje, somarDias } from "./datas";
 
 /** Situação do CA: vencido, vence em até 30 dias, ou ok. */
 export function situacaoCA(validade: string | null): { texto: string; classe: string } {
