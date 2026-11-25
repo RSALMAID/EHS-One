@@ -34,6 +34,11 @@ export default async function MeuInicio() {
         <p className="text-sm">{assinar ? `${assinar} assinatura(s) esperando por você` : "Análise de risco e permissão de trabalho"}</p>
       </Link>
 
+      <Link href="/meu/inspecoes" className="block rounded-lg border border-slate-200 bg-white p-4">
+        <p className="font-semibold">Inspeções</p>
+        <p className="text-sm">Fazer um checklist no local, com foto</p>
+      </Link>
+
       <Link href="/meu/acoes" className="block rounded-lg border border-slate-200 bg-white p-4">
         <p className="font-semibold">Minhas ações</p>
         <p className="text-sm">Ações do plano de ação em que você é o responsável</p>

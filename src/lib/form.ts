@@ -13,3 +13,9 @@ export function seErro(path: string, error: { message: string } | null) {
     redirect(`${path}?erro=${encodeURIComponent(error.message)}`);
   }
 }
+
+/** Caminho de volta aceito pelas ações: só dentro do sistema. */
+export function voltaSegura(v: FormDataEntryValue | null, padrao: string) {
+  const s = String(v ?? "");
+  return /^\/(app|meu)\/[a-z0-9/_-]*$/i.test(s) ? s : padrao;
+}
