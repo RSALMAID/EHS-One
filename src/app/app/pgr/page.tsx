@@ -39,7 +39,10 @@ export default async function PgrPage({ searchParams }: Props) {
             Setor → processo → atividade → riscos. Cada risco avaliado entra no Inventário.
           </p>
         </div>
-        <Link href="/app/pgr/inventario" className="btn-ghost">Inventário de riscos</Link>
+        <div className="flex gap-2">
+          <Link href="/app/pgr/mapa" className="btn-ghost">Mapa de riscos</Link>
+          <Link href="/app/pgr/inventario" className="btn-ghost">Inventário de riscos</Link>
+        </div>
       </div>
       <Erro mensagem={erro} />
 
