@@ -2,12 +2,19 @@ import Link from "next/link";
 import { dataBR, diasAte } from "@/lib/datas";
 import { meusDados } from "@/lib/meu";
 import { RESULTADOS } from "@/lib/saude";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function MeuInicio() {
   const { trabalhador, entregas, obrigatorios, asos } = await meusDados();
   const aConfirmar = entregas.filter((e) => !e.confirmed_at && !e.signature_name).length;
   const treinosPend = obrigatorios.filter((o) => o.s.tipo !== "ok").length;
   const aso = asos[0];
+  const supabase = await createClient();
+  const { count: assinar } = await supabase
+    .from("task_signatures")
+    .select("id", { count: "exact", head: true })
+    .eq("worker_id", trabalhador.id)
+    .is("signed_at", null);
 
   return (
     <div className="space-y-3">
@@ -20,6 +27,11 @@ export default async function MeuInicio() {
       <Link href="/meu/relatar" className="block rounded-lg bg-emerald-700 p-4 text-white">
         <p className="font-semibold">Relatar desvio ou quase acidente</p>
         <p className="text-sm text-emerald-50">Leva menos de um minuto, com foto</p>
+      </Link>
+
+      <Link href="/meu/apr" className={`block rounded-lg border p-4 ${assinar ? "border-amber-400 bg-amber-50" : "border-slate-200 bg-white"}`}>
+        <p className="font-semibold">APR e PT</p>
+        <p className="text-sm">{assinar ? `${assinar} assinatura(s) esperando por você` : "Análise de risco e permissão de trabalho"}</p>
       </Link>
 
       <Link href="/meu/acoes" className="block rounded-lg border border-slate-200 bg-white p-4">

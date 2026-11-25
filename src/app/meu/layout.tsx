@@ -1,18 +1,22 @@
 import Link from "next/link";
 import { sair } from "@/app/entrar/actions";
+import { liberado, modulosLiberados } from "@/lib/modulos";
 import { ehEquipe, requireOrg } from "@/lib/org";
 
 const ABAS = [
   { href: "/meu", label: "Início" },
-  { href: "/meu/relatar", label: "Relatar" },
-  { href: "/meu/acoes", label: "Ações" },
-  { href: "/meu/epis", label: "EPIs" },
-  { href: "/meu/saude", label: "Saúde" },
+  { href: "/meu/relatar", label: "Relatar", module: "eventos" },
+  { href: "/meu/apr", label: "APR/PT", module: "apr_pt" },
+  { href: "/meu/acoes", label: "Ações", module: "acoes" },
+  { href: "/meu/epis", label: "EPIs", module: "epi" },
+  { href: "/meu/saude", label: "Saúde", module: "saude" },
 ];
 
 export default async function MeuLayout({ children }: { children: React.ReactNode }) {
   const org = await requireOrg();
   const equipe = ehEquipe(org.role);
+  const modulos = await modulosLiberados(org.id);
+  const abas = ABAS.filter((a) => liberado(modulos, a.module));
 
   return (
     <div className="mx-auto min-h-screen max-w-lg pb-20">
@@ -41,10 +45,10 @@ export default async function MeuLayout({ children }: { children: React.ReactNod
         )}
       </main>
       <nav className="fixed inset-x-0 bottom-0 border-t border-slate-200 bg-white">
-        <ul className="mx-auto grid max-w-lg grid-cols-5 text-center text-xs">
-          {ABAS.map((a) => (
-            <li key={a.href}>
-              <Link href={a.href} className="block py-3 font-medium text-slate-700 active:bg-slate-100">
+        <ul className="mx-auto flex max-w-lg text-center text-xs">
+          {abas.map((a) => (
+            <li key={a.href} className="flex-1">
+              <Link href={a.href} className="block px-1 py-3 font-medium text-slate-700 active:bg-slate-100">
                 {a.label}
               </Link>
             </li>
