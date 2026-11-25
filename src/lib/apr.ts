@@ -111,9 +111,3 @@ export function dataHora(iso: string | null | undefined) {
 export function deLocal(v: string | null) {
   return v ? new Date(`${v}:00-03:00`).toISOString() : null;
 }
-
-/** Caminho de volta aceito pelas ações: só dentro do sistema. */
-export function voltaSegura(v: FormDataEntryValue | null, padrao: string) {
-  const s = String(v ?? "");
-  return /^\/(app|meu)\/[a-z0-9/_-]*$/i.test(s) ? s : padrao;
-}
