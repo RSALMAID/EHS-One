@@ -35,3 +35,9 @@ Importe o repositório na Vercel e cadastre as mesmas duas variáveis de ambient
 ## Segurança
 
 O repositório é público: nunca envie `.env.local`, chaves `service_role` ou dados de clientes.
+
+## Trava de acesso (pré-lançamento)
+
+Cadastre na Vercel a variável `CODIGO_ACESSO` com o código desejado e faça um Redeploy: o site
+passa a pedir esse código antes de qualquer página (exceto `/configuracao`). Apague a variável
+e faça Redeploy para abrir o site. Trocar o código obriga todos a digitá-lo de novo.
