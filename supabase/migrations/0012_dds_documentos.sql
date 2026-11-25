@@ -3,6 +3,16 @@
 -- Comunicados: avisos da equipe com "li e entendi".
 -- Documentos: biblioteca (PGR, PCMSO, laudos, procedimentos…) com versão, validade
 -- e arquivo; a equipe decide o que o trabalhador vê.
+--
+-- Pode rodar mais de uma vez: se já foi rodado neste banco, não faz nada.
+
+do $migracao$
+begin
+  if to_regclass('public.dds_talks') is not null then
+    raise notice 'Já rodado antes: nada a fazer.';
+    return;
+  end if;
+  execute $sql$
 
 /* ---------------- DDS ---------------- */
 
@@ -187,3 +197,8 @@ create policy documentos_delete on storage.objects for delete to authenticated u
 revoke all on function public.confirm_dds(uuid, text) from public, anon;
 grant execute on function public.confirm_dds(uuid, text) to authenticated;
 grant execute on function public.dds_doc_same_org_check() to authenticated;
+
+  $sql$;
+end $migracao$;
+
+select '0012: pronto no banco' as resultado where to_regclass('public.dds_talks') is not null;
