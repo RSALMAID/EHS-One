@@ -16,6 +16,9 @@ export default async function OnboardingPage({ searchParams }: Props) {
       .limit(1)
       .maybeSingle();
     if (membro) redirect("/app");
+    // Convidado pela empresa: entra sem criar outra empresa.
+    const { data: aceitos } = await supabase.rpc("accept_invitations");
+    if (aceitos) redirect("/app");
   }
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-4">

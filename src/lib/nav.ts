@@ -1,4 +1,4 @@
-export type NavItem = { label: string; href?: string; phase: "MVP" | "V2" | "Premium" };
+export type NavItem = { label: string; href?: string; phase: "MVP" | "V2" | "Premium"; module?: string };
 export type NavGroup = { title: string; items: NavItem[] };
 
 // Espelha o mapa de telas: itens com href já existem; os demais aparecem
@@ -9,7 +9,7 @@ export const NAV: NavGroup[] = [
     items: [
       { label: "Painel", href: "/app", phase: "MVP" },
       { label: "Agenda EHS", phase: "MVP" },
-      { label: "Central de Ações", href: "/app/acoes", phase: "MVP" },
+      { label: "Central de Ações", href: "/app/acoes", phase: "MVP", module: "acoes" },
       { label: "Copiloto", phase: "MVP" },
     ],
   },
@@ -26,27 +26,27 @@ export const NAV: NavGroup[] = [
   {
     title: "Riscos",
     items: [
-      { label: "GRO/PGR", href: "/app/pgr", phase: "MVP" },
-      { label: "Mapa de riscos", href: "/app/pgr/mapa", phase: "MVP" },
-      { label: "Ergonomia", phase: "V2" },
-      { label: "Requisitos legais", phase: "V2" },
+      { label: "GRO/PGR", href: "/app/pgr", phase: "MVP", module: "pgr" },
+      { label: "Mapa de riscos", href: "/app/pgr/mapa", phase: "MVP", module: "pgr" },
+      { label: "Ergonomia", phase: "V2", module: "higiene" },
+      { label: "Requisitos legais", phase: "V2", module: "requisitos_legais" },
     ],
   },
   {
     title: "Operação",
     items: [
-      { label: "EPI", href: "/app/epi", phase: "MVP" },
-      { label: "Treinamentos", href: "/app/treinamentos", phase: "MVP" },
-      { label: "Saúde ocupacional", href: "/app/saude", phase: "MVP" },
-      { label: "Inspeções e checklists", phase: "MVP" },
-      { label: "Ocorrências", phase: "MVP" },
+      { label: "EPI", href: "/app/epi", phase: "MVP", module: "epi" },
+      { label: "Treinamentos", href: "/app/treinamentos", phase: "MVP", module: "treinamentos" },
+      { label: "Saúde ocupacional", href: "/app/saude", phase: "MVP", module: "saude" },
+      { label: "Inspeções e checklists", phase: "MVP", module: "inspecoes" },
+      { label: "Ocorrências", phase: "MVP", module: "eventos" },
     ],
   },
   {
     title: "Gestão",
     items: [
-      { label: "Documentos", phase: "MVP" },
-      { label: "Indicadores", phase: "V2" },
+      { label: "Documentos", phase: "MVP", module: "documentos" },
+      { label: "Indicadores", phase: "V2", module: "dashboard" },
       { label: "Configurações", phase: "MVP" },
     ],
   },

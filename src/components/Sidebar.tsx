@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV } from "@/lib/nav";
 
-export function Sidebar() {
+export function Sidebar({ modulos }: { modulos: string[] }) {
   const pathname = usePathname();
   return (
     <nav className="space-y-5 text-sm">
@@ -14,7 +14,9 @@ export function Sidebar() {
             {group.title}
           </p>
           <ul className="mt-1 space-y-0.5">
-            {group.items.map((item) => {
+            {group.items
+              .filter((item) => !item.module || modulos.includes("*") || modulos.includes(item.module))
+              .map((item) => {
               const active = item.href === pathname;
               return (
                 <li key={item.label}>

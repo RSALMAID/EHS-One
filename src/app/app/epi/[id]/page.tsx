@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Assinatura } from "@/lib/assinatura";
 import { notFound } from "next/navigation";
 import { Erro } from "@/components/Erro";
 import { dataBR, MOTIVOS, situacaoCA } from "@/lib/epi";
@@ -14,7 +15,8 @@ type EntregaLinha = {
   quantity: number;
   reason: string;
   ca_number: string | null;
-  signature_name: string;
+  signature_name: string | null;
+  confirmed_at: string | null;
   workers: { id: string; full_name: string } | null;
 };
 
@@ -32,7 +34,7 @@ export default async function EpiItemPage({ params, searchParams }: Props) {
     supabase.from("ppe_job_roles").select("job_role_id").eq("ppe_item_id", id),
     supabase
       .from("ppe_deliveries")
-      .select("id, delivered_on, quantity, reason, ca_number, signature_name, workers(id, full_name)")
+      .select("id, delivered_on, quantity, reason, ca_number, signature_name, confirmed_at, workers(id, full_name)")
       .eq("ppe_item_id", id)
       .order("delivered_on", { ascending: false })
       .limit(100),
@@ -120,7 +122,7 @@ export default async function EpiItemPage({ params, searchParams }: Props) {
             {e.workers ? (
               <Link href={`/app/epi/ficha/${e.workers.id}`} className="underline">{e.workers.full_name}</Link>
             ) : "—"}{" "}
-            · {e.quantity} un. · {MOTIVOS[e.reason] ?? e.reason} · CA {e.ca_number ?? "—"} · assinado: {e.signature_name}
+            · {e.quantity} un. · {MOTIVOS[e.reason] ?? e.reason} · CA {e.ca_number ?? "—"} · <Assinatura e={e} />
           </li>
         ))}
         {!linhas.length && <li className="px-4 py-6 text-center text-slate-500">Nenhuma entrega ainda.</li>}
