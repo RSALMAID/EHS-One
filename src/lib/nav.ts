@@ -9,7 +9,7 @@ export const NAV: NavGroup[] = [
     items: [
       { label: "Painel", href: "/app", phase: "MVP" },
       { label: "Agenda EHS", phase: "MVP" },
-      { label: "Central de Ações", href: "/app/acoes", phase: "MVP", module: "acoes" },
+      { label: "Plano de ação", href: "/app/acoes", phase: "MVP", module: "acoes" },
       { label: "Copiloto", phase: "MVP" },
     ],
   },

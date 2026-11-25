@@ -1,85 +1,78 @@
+import Link from "next/link";
+import { Erro } from "@/components/Erro";
+import { encerrada, numero, ORIGENS, STATUS_PLANO } from "@/lib/acoes";
+import { dataBR, hoje } from "@/lib/datas";
 import { requireOrg } from "@/lib/org";
 import { createClient } from "@/lib/supabase/server";
-import { criarAcao, mudarStatus } from "./actions";
+import { criarPlano } from "./actions";
 
-const ORIGENS: Record<string, string> = {
-  pgr: "PGR",
-  inspecao: "Inspeção",
-  ocorrencia: "Ocorrência",
-  auditoria: "Auditoria",
-  ergonomia: "Ergonomia",
-  dds: "DDS",
-  treinamento: "Treinamento",
-  documento: "Documento",
-  observacao: "Observação",
-  requisito_legal: "Requisito legal",
-  vencimento: "Vencimento",
-  outro: "Outro",
+type Props = { searchParams: Promise<{ erro?: string; ver?: string }> };
+
+type Plano = {
+  id: string;
+  number: number;
+  title: string;
+  origin: string;
+  due_date: string | null;
+  status: string;
+  workers: { full_name: string } | null;
+  actions: { status: string; due_date: string | null }[];
 };
 
-const STATUS: Record<string, string> = {
-  aberta: "Aberta",
-  em_andamento: "Em andamento",
-  aguardando_validacao: "Aguardando validação",
-  concluida: "Concluída",
-  cancelada: "Cancelada",
-};
-
-function situacao(due: string | null, status: string, hoje: string) {
-  if (status === "concluida" || status === "cancelada") return { cor: "bg-emerald-500", texto: "Encerrada" };
-  if (!due) return { cor: "bg-slate-300", texto: "Sem prazo" };
-  if (due < hoje) return { cor: "bg-red-500", texto: "Atrasada" };
-  const semana = new Date(Date.now() + 7 * 86_400_000).toISOString().slice(0, 10);
-  if (due <= semana) return { cor: "bg-amber-500", texto: "Vence esta semana" };
-  return { cor: "bg-emerald-500", texto: "No prazo" };
-}
-
-export default async function AcoesPage() {
+export default async function PlanosPage({ searchParams }: Props) {
+  const { erro, ver } = await searchParams;
   const org = await requireOrg();
   const supabase = await createClient();
-  const hoje = new Date().toISOString().slice(0, 10);
-
-  const [{ data: acoes }, { data: trabalhadores }] = await Promise.all([
-    supabase
-      .from("actions")
-      .select("id, number, origin, problem, action, due_date, status, workers(full_name)")
-      .eq("organization_id", org.id)
-      .order("number", { ascending: false }),
-    supabase
-      .from("workers")
-      .select("id, full_name")
-      .eq("organization_id", org.id)
-      .eq("active", true)
-      .order("full_name"),
+  const todos = ver === "todos";
+  let consulta = supabase
+    .from("action_plans")
+    .select("id, number, title, origin, due_date, status, workers(full_name), actions(status, due_date)")
+    .eq("organization_id", org.id)
+    .order("number", { ascending: false });
+  if (!todos) consulta = consulta.in("status", ["aberto", "em_andamento"]);
+  const [{ data }, { data: trabalhadores }] = await Promise.all([
+    consulta,
+    supabase.from("workers").select("id, full_name").eq("organization_id", org.id).eq("active", true).order("full_name"),
   ]);
+  const planos = (data ?? []) as unknown as Plano[];
+  const h = hoje();
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Central de Ações</h1>
+      <h1 className="text-2xl font-bold">Plano de ação</h1>
       <p className="mt-1 text-sm text-slate-600">
-        Origem → problema → ação → responsável → prazo → evidência → validação → encerramento.
+        Cada plano reúne as ações de um assunto. As ações criadas no PGR, EPI, treinamentos, saúde e inspeções entram
+        sozinhas no plano da sua origem.
       </p>
+      <div className="mt-3 flex flex-wrap gap-3 text-sm">
+        <Link href="/app/acoes/todas" className="btn-ghost">Todas as ações</Link>
+        <Link href={todos ? "/app/acoes" : "/app/acoes?ver=todos"} className="btn-ghost">
+          {todos ? "Só planos abertos" : "Ver também encerrados"}
+        </Link>
+      </div>
+      <Erro mensagem={erro} />
 
-      <form action={criarAcao} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-2">
+      <form action={criarPlano} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-2">
+        <p className="font-semibold sm:col-span-2">Novo plano</p>
         <label className="text-sm">
-          Problema
-          <input name="problema" required className="input mt-1" placeholder="Esmeril sem proteção" />
-        </label>
-        <label className="text-sm">
-          Ação
-          <input name="acao" required className="input mt-1" placeholder="Instalar proteção fixa" />
+          Título
+          <input name="titulo" required className="input mt-1" placeholder="Adequação NR-12 da prensa" />
         </label>
         <label className="text-sm">
           Origem
-          <select name="origem" className="input mt-1" defaultValue="outro">
+          <select name="origem" defaultValue="outro" className="input mt-1">
             {Object.entries(ORIGENS).map(([v, l]) => (
               <option key={v} value={v}>{l}</option>
             ))}
           </select>
         </label>
+        <label className="text-sm sm:col-span-2">
+          Objetivo (opcional)
+          <input name="objetivo" className="input mt-1" />
+        </label>
         <label className="text-sm">
-          Responsável
-          <select name="responsavel" className="input mt-1" defaultValue="">
+          Dono do plano
+          <select name="dono" className="input mt-1">
             <option value="">—</option>
             {(trabalhadores ?? []).map((t) => (
               <option key={t.id} value={t.id}>{t.full_name}</option>
@@ -87,52 +80,45 @@ export default async function AcoesPage() {
           </select>
         </label>
         <label className="text-sm">
-          Prazo
+          Prazo final
           <input name="prazo" type="date" className="input mt-1" />
         </label>
-        <div className="flex items-end">
-          <button className="btn w-full sm:w-auto">Criar ação</button>
+        <div className="sm:col-span-2">
+          <button className="btn">Criar plano</button>
         </div>
       </form>
 
       <ul className="mt-6 space-y-2">
-        {(acoes ?? []).map((a) => {
-          const s = situacao(a.due_date, a.status, hoje);
-          const resp = (a.workers as unknown as { full_name: string } | null)?.full_name;
+        {planos.map((p) => {
+          const total = p.actions.length;
+          const feitas = p.actions.filter((a) => encerrada(a.status)).length;
+          const atrasadas = p.actions.filter((a) => !encerrada(a.status) && a.due_date && a.due_date < h).length;
+          const pct = total ? Math.round((feitas / total) * 100) : 0;
           return (
-            <li key={a.id} className="rounded-lg border border-slate-200 bg-white p-4">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="text-xs text-slate-500">
-                    #{String(a.number).padStart(4, "0")} · {ORIGENS[a.origin] ?? a.origin}
-                  </p>
-                  <p className="mt-1 font-medium">{a.action}</p>
-                  <p className="text-sm text-slate-600">{a.problem}</p>
-                  <p className="mt-1 text-xs text-slate-500">
-                    {resp ?? "Sem responsável"} · {a.due_date ? `prazo ${a.due_date.split("-").reverse().join("/")}` : "sem prazo"}
-                  </p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="flex items-center gap-1.5 text-xs text-slate-600">
-                    <span className={`h-2.5 w-2.5 rounded-full ${s.cor}`} /> {s.texto}
-                  </span>
-                  <form action={mudarStatus} className="flex gap-2">
-                    <input type="hidden" name="id" value={a.id} />
-                    <select name="status" defaultValue={a.status} className="input py-1 text-xs">
-                      {Object.entries(STATUS).map(([v, l]) => (
-                        <option key={v} value={v}>{l}</option>
-                      ))}
-                    </select>
-                    <button className="btn-ghost px-2 py-1 text-xs">Salvar</button>
-                  </form>
-                </div>
+            <li key={p.id} className="rounded-lg border border-slate-200 bg-white p-4 text-sm">
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <Link href={`/app/acoes/plano/${p.id}`} className="font-medium text-emerald-800 underline">
+                  Plano {numero(p.number)} · {p.title}
+                </Link>
+                <span className="text-xs text-slate-500">
+                  {ORIGENS[p.origin]} · {STATUS_PLANO[p.status]}
+                  {p.due_date ? ` · até ${dataBR(p.due_date)}` : ""}
+                </span>
               </div>
+              <div className="mt-2 h-2 rounded bg-slate-100">
+                <div className="h-2 rounded bg-emerald-600" style={{ width: `${pct}%` }} />
+              </div>
+              <p className="mt-1 text-xs text-slate-600">
+                {feitas} de {total} ações encerradas
+                {atrasadas ? <span className="text-red-700"> · {atrasadas} atrasada(s)</span> : ""}
+                {p.workers ? ` · dono: ${p.workers.full_name}` : ""}
+              </p>
             </li>
           );
         })}
-        {!acoes?.length && (
+        {!planos.length && (
           <li className="rounded-lg border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500">
-            Nenhuma ação ainda. Elas também nascerão de inspeções, ocorrências e do PGR.
+            Nenhum plano aberto.
           </li>
         )}
       </ul>
