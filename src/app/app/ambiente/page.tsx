@@ -61,7 +61,7 @@ export default async function AmbientePage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Meio ambiente</h1>
+      <h1 className="titulo">Meio ambiente</h1>
       <p className="mt-1 text-sm text-slate-600">
         Aspectos e impactos ambientais (LAIA) com significância, e o registro dos resíduos gerados e para onde foram.
         Licenças ambientais ficam em Documentos, com validade.
@@ -78,7 +78,7 @@ export default async function AmbientePage({ searchParams }: Props) {
             {listaAspectos.map((a) => {
               const s = significancia(a.significance);
               return (
-                <li key={a.id} className="rounded-lg border border-slate-200 bg-white p-3 text-sm">
+                <li key={a.id} className="rounded-xl border border-slate-200 bg-white shadow-sm p-3 text-sm">
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <p className="font-medium">
                       {a.activity}: {a.aspect} → {a.impact}
@@ -100,7 +100,7 @@ export default async function AmbientePage({ searchParams }: Props) {
             })}
             {!listaAspectos.length && <li className="text-sm text-slate-500">Nenhum aspecto levantado ainda.</li>}
           </ul>
-          <form action={adicionarAspecto} className="mt-4 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+          <form action={adicionarAspecto} className="mt-4 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
             <p className="font-medium sm:col-span-2">Novo aspecto</p>
             <label>
               Atividade
@@ -205,7 +205,7 @@ export default async function AmbientePage({ searchParams }: Props) {
               </tbody>
             </table>
           </div>
-          <form action={registrarResiduo} className="mt-4 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-4">
+          <form action={registrarResiduo} className="mt-4 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-4">
             <p className="font-medium sm:col-span-4">Registrar saída de resíduo</p>
             <label className="sm:col-span-2">
               Resíduo

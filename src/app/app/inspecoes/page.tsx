@@ -37,7 +37,7 @@ export default async function InspecoesPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Inspeções e checklists</h1>
+      <h1 className="titulo">Inspeções e checklists</h1>
       <p className="mt-1 text-sm text-slate-600">
         Escolha um modelo, responda no local e conclua. Os trabalhadores também inspecionam pelo Meu EHS, com foto.
         Cada “não conforme” vira uma ação num plano de ação da inspeção.
@@ -56,7 +56,7 @@ export default async function InspecoesPage({ searchParams }: Props) {
         )}
       </div>
 
-      <ul className="mt-6 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-6 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {inspecoes.map((i) => {
           const nc = i.inspection_answers.filter((a) => a.answer === "nao_conforme").length;
           const respondidas = i.inspection_answers.filter((a) => a.answer).length;

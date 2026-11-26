@@ -25,7 +25,7 @@ export default async function SesmtPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">SESMT</h1>
+      <h1 className="titulo">SESMT</h1>
       <p className="mt-1 text-sm text-slate-600">
         Serviço Especializado em Segurança e em Medicina do Trabalho (NR-04). Registre os profissionais, o registro
         profissional e a carga horária. O dimensionamento depende do grau de risco e do número de empregados (Anexo II da
@@ -91,7 +91,7 @@ export default async function SesmtPage({ searchParams }: Props) {
         </table>
       </div>
 
-      <form action={adicionarSesmt} className="mt-4 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-3 sm:items-end">
+      <form action={adicionarSesmt} className="mt-4 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-3 sm:items-end">
         <label>
           Trabalhador cadastrado
           <select name="trabalhador" className="input mt-1" defaultValue="">

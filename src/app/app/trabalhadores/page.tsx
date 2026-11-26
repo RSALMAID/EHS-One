@@ -48,14 +48,14 @@ export default async function TrabalhadoresPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Trabalhadores</h1>
+      <h1 className="titulo">Trabalhadores</h1>
       <p className="mt-1 text-sm text-slate-600">
         O vínculo trabalhador → cargo → setor é o que liga cada pessoa aos riscos, exames, EPIs e
         treinamentos. Importação por Excel/CSV chega em seguida.
       </p>
       <Erro mensagem={erro} />
 
-      <form action={adicionarTrabalhador} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-2 lg:grid-cols-3">
+      <form action={adicionarTrabalhador} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-2 lg:grid-cols-3">
         <label className="text-sm">
           Nome completo
           <input name="nome" required className="input mt-1" />
@@ -82,7 +82,7 @@ export default async function TrabalhadoresPage({ searchParams }: Props) {
 
       <ul className="mt-6 space-y-2">
         {(trabalhadores ?? []).map((t) => (
-          <li key={t.id} className={`rounded-lg border border-slate-200 bg-white p-4 ${t.active ? "" : "opacity-60"}`}>
+          <li key={t.id} className={`rounded-xl border border-slate-200 bg-white shadow-sm p-4 ${t.active ? "" : "opacity-60"}`}>
             <p className="font-medium">
               {t.full_name}{" "}
               <span className="text-sm font-normal text-slate-500">

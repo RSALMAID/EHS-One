@@ -17,13 +17,13 @@ export default async function CargosPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Cargos e funções</h1>
+      <h1 className="titulo">Cargos e funções</h1>
       <p className="mt-1 text-sm text-slate-600">
         A descrição das atividades do cargo será usada no PGR e na matriz de treinamentos.
       </p>
       <Erro mensagem={erro} />
 
-      <form action={adicionarCargo} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-[1fr_2fr_auto] sm:items-end">
+      <form action={adicionarCargo} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-[1fr_2fr_auto] sm:items-end">
         <label className="text-sm">
           Cargo / função
           <input name="nome" required className="input mt-1" placeholder="Soldador" />
@@ -35,7 +35,7 @@ export default async function CargosPage({ searchParams }: Props) {
         <button className="btn">Adicionar</button>
       </form>
 
-      <ul className="mt-6 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white">
+      <ul className="mt-6 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm">
         {(cargos ?? []).map((c) => (
           <li key={c.id} className="flex items-start justify-between gap-3 px-4 py-2 text-sm">
             <div>

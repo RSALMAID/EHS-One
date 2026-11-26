@@ -23,7 +23,7 @@ export default async function ModeloPage({ params, searchParams }: Props) {
       <h1 className="mt-3 text-2xl font-bold">{m.name}</h1>
       <Erro mensagem={erro} />
 
-      <form action={salvarModelo} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-[1fr_2fr_auto_auto] sm:items-end">
+      <form action={salvarModelo} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-[1fr_2fr_auto_auto] sm:items-end">
         <input type="hidden" name="id" value={m.id} />
         <label className="text-sm">
           Nome
@@ -41,7 +41,7 @@ export default async function ModeloPage({ params, searchParams }: Props) {
 
       <h2 className="mt-6 text-lg font-semibold">Perguntas</h2>
       <p className="text-sm text-slate-600">Escreva cada item de forma que “sim” seja o certo (Conforme).</p>
-      <ol className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ol className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {(itens ?? []).map((i, n) => (
           <li key={i.id} className="flex items-start justify-between gap-3 px-4 py-2">
             <span>{n + 1}. {i.question}</span>

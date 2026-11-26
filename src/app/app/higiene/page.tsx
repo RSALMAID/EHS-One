@@ -41,7 +41,7 @@ export default async function HigienePage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Higiene ocupacional</h1>
+      <h1 className="titulo">Higiene ocupacional</h1>
       <p className="mt-1 text-sm text-slate-600">
         Organize os trabalhadores em GHE (grupos com exposição parecida) e registre as medições: ruído, calor, poeira,
         químicos. O sistema compara com o limite de tolerância e o nível de ação, e o que passar vira ação no plano do
@@ -49,7 +49,7 @@ export default async function HigienePage({ searchParams }: Props) {
       </p>
       <Erro mensagem={erro} />
 
-      <ul className="mt-4 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-4 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {ghes.map((g) => {
           // Última medição de cada agente
           const ultimas = new Map<string, Ghe["exposure_assessments"][number]>();
@@ -83,7 +83,7 @@ export default async function HigienePage({ searchParams }: Props) {
 
       <details className="mt-6" open={!ghes.length}>
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">+ Novo GHE</summary>
-        <form action={criarGhe} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+        <form action={criarGhe} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
           <label>
             Nome do GHE
             <input name="nome" required className="input mt-1" placeholder="Ex.: Operadores de prensa" />

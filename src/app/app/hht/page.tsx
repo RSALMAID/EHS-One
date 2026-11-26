@@ -22,7 +22,7 @@ export default async function HhtPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">HHT · horas-homem trabalhadas</h1>
+      <h1 className="titulo">HHT · horas-homem trabalhadas</h1>
       <p className="mt-1 text-sm text-slate-600">
         Informe todo mês quantas pessoas trabalharam e o total de horas (incluindo horas extras). É a base das taxas de
         frequência e gravidade do <Link href="/painel" className="underline">Painel</Link>. Lançar de novo o mesmo mês
@@ -30,7 +30,7 @@ export default async function HhtPage({ searchParams }: Props) {
       </p>
       <Erro mensagem={erro} />
 
-      <form action={salvarHht} className="mt-4 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-4 sm:items-end">
+      <form action={salvarHht} className="mt-4 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-4 sm:items-end">
         <label>
           Mês
           <input name="mes" type="month" required defaultValue={mesAtual} className="input mt-1" />

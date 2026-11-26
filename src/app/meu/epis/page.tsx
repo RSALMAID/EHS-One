@@ -40,7 +40,7 @@ export default async function MeusEpis({ searchParams }: Props) {
       )}
 
       <h2 className="mt-6 font-semibold">Histórico</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {feitas.map((e) => (
           <li key={e.id} className="px-4 py-3">
             <p className="font-medium">{e.ppe_items?.name} · {e.quantity} un.</p>

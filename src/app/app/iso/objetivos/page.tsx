@@ -57,7 +57,7 @@ export default async function ObjetivosPage({ searchParams }: Props) {
           const s = STATUS_OBJETIVO[o.status];
           const atrasado = o.status === "em_andamento" && o.due_on && o.due_on < h;
           return (
-            <li key={o.id} className="rounded-lg border border-slate-200 bg-white p-4 text-sm">
+            <li key={o.id} className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="font-semibold">{o.title}</span>
                 <span className={`rounded px-2 py-0.5 text-xs ${s.cor}`}>{s.nome}</span>
@@ -120,7 +120,7 @@ export default async function ObjetivosPage({ searchParams }: Props) {
           );
         })}
         {!objetivos.length && (
-          <li className="rounded-lg border border-slate-200 bg-white px-4 py-6 text-center text-sm text-slate-500">
+          <li className="rounded-xl border border-slate-200 bg-white shadow-sm px-4 py-6 text-center text-sm text-slate-500">
             Nenhum objetivo ainda. Exemplos: reduzir a taxa de frequência para 5; reduzir em 20% o resíduo enviado a aterro.
           </li>
         )}
@@ -128,7 +128,7 @@ export default async function ObjetivosPage({ searchParams }: Props) {
 
       <details className="mt-6" open={!objetivos.length}>
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">+ Novo objetivo</summary>
-        <form action={criarObjetivo} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-3">
+        <form action={criarObjetivo} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-3">
           <label className="sm:col-span-2">
             Objetivo
             <input name="titulo" required className="input mt-1" placeholder="Ex.: Reduzir acidentes com afastamento" />

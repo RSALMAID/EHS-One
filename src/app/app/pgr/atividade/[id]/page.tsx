@@ -59,7 +59,7 @@ export default async function AtividadePage({ params, searchParams }: Props) {
   const emEdicao = (riscos as Risco[] | null)?.find((r) => r.id === editar);
 
   const Formulario = ({ r }: { r?: Risco }) => (
-    <form action={salvarRisco} className="grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-2">
+    <form action={salvarRisco} className="grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-2">
       <input type="hidden" name="atividade" value={id} />
       {r && <input type="hidden" name="id" value={r.id} />}
       <p className="font-semibold sm:col-span-2">{r ? "Editar risco" : "Novo risco"}</p>
@@ -149,7 +149,7 @@ export default async function AtividadePage({ params, searchParams }: Props) {
     <div>
       <Link href="/app/pgr" className="text-sm text-emerald-700 underline">← GRO / PGR</Link>
       <p className="mt-3 text-xs text-slate-500">{caminho}</p>
-      <h1 className="text-2xl font-bold">{atividade.name}</h1>
+      <h1 className="titulo">{atividade.name}</h1>
       {atividade.description && <p className="mt-1 text-sm text-slate-600">{atividade.description}</p>}
       <Erro mensagem={erro} />
 
@@ -158,7 +158,7 @@ export default async function AtividadePage({ params, searchParams }: Props) {
           const residual = r.residual_severity && r.residual_probability ? r.residual_severity * r.residual_probability : null;
           const acoesDoRisco = (acoes ?? []).filter((a) => a.origin_ref === r.id);
           return (
-            <li key={r.id} className="rounded-lg border border-slate-200 bg-white p-4 text-sm">
+            <li key={r.id} className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
                   <p className="text-xs text-slate-500">{TIPOS_RISCO[r.risk_type]}</p>

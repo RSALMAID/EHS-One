@@ -52,7 +52,7 @@ export default async function PendenciasPage({ searchParams }: Props) {
       <Erro mensagem={erro} />
 
       <h2 className="mt-6 text-lg font-semibold">Sem EPI obrigatório do cargo ({faltas.length})</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {faltas.map((p) => (
           <li key={p.trabalhador.id + p.item.id} className="flex items-center justify-between gap-3 px-4 py-2">
             <span>
@@ -72,7 +72,7 @@ export default async function PendenciasPage({ searchParams }: Props) {
       </ul>
 
       <h2 className="mt-6 text-lg font-semibold">Troca vencida ou nos próximos 15 dias ({trocas.length})</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {trocas.map((p) => {
           const dias = diasAte(p.vence!);
           return (
@@ -91,7 +91,7 @@ export default async function PendenciasPage({ searchParams }: Props) {
       </ul>
 
       <h2 className="mt-6 text-lg font-semibold">CA vencido ou vencendo em 30 dias ({caAlerta.length})</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {caAlerta.map((i) => {
           const ca = situacaoCA(i.ca_valid_until);
           return (
@@ -112,7 +112,7 @@ export default async function PendenciasPage({ searchParams }: Props) {
       </ul>
 
       <h2 className="mt-6 text-lg font-semibold">Sem estoque ({semEstoque.length})</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {semEstoque.map((i) => (
           <li key={i.id} className="px-4 py-2">
             <Link href={`/app/epi/${i.id}`} className="underline">{i.name}</Link>

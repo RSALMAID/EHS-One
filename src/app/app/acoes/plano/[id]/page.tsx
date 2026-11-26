@@ -46,7 +46,7 @@ export default async function PlanoPage({ params, searchParams }: Props) {
       <p className="text-sm text-slate-600">Origem: {ORIGENS[p.origin]}</p>
       <Erro mensagem={erro} />
 
-      <details className="mt-4 rounded-lg border border-slate-200 bg-white p-4">
+      <details className="mt-4 rounded-xl border border-slate-200 bg-white shadow-sm p-4">
         <summary className="cursor-pointer text-sm font-semibold">Dados do plano</summary>
         <form action={salvarPlano} className="mt-3 grid gap-3 sm:grid-cols-2">
           <input type="hidden" name="id" value={p.id} />
@@ -80,7 +80,7 @@ export default async function PlanoPage({ params, searchParams }: Props) {
         </form>
       </details>
 
-      <form action={criarAcao} className="mt-4 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-2">
+      <form action={criarAcao} className="mt-4 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-2">
         <input type="hidden" name="plano" value={p.id} />
         <p className="font-semibold sm:col-span-2">Nova ação neste plano</p>
         <label className="text-sm">

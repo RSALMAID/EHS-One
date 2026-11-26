@@ -34,7 +34,7 @@ export default async function PgrPage({ searchParams }: Props) {
     <div>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold">GRO / PGR</h1>
+          <h1 className="titulo">GRO / PGR</h1>
           <p className="mt-1 text-sm text-slate-600">
             Setor → processo → atividade → riscos. Cada risco avaliado entra no Inventário.
           </p>
@@ -64,7 +64,7 @@ export default async function PgrPage({ searchParams }: Props) {
             .map((s) => {
               const procs = (processos ?? []).filter((p) => p.sector_id === s.id);
               return (
-                <section key={s.id} className="rounded-lg border border-slate-200 bg-white p-4">
+                <section key={s.id} className="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
                   <h2 className="font-semibold">
                     {u.name} › {s.name}
                   </h2>

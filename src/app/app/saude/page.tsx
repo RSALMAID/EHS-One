@@ -81,7 +81,7 @@ export default async function SaudePage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Saúde ocupacional</h1>
+      <h1 className="titulo">Saúde ocupacional</h1>
       <p className="mt-1 text-sm text-slate-600">
         ASO de cada trabalhador e exames do PCMSO por cargo. Dados de saúde: exames só aparecem para proprietário,
         administrador EHS e médico.
@@ -94,7 +94,7 @@ export default async function SaudePage({ searchParams }: Props) {
 
       <h2 className="mt-6 text-lg font-semibold">Pendências</h2>
       <div className="mt-2 grid gap-4 lg:grid-cols-2">
-        <section className="rounded-lg border border-slate-200 bg-white p-4 text-sm">
+        <section className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
           <p className="font-semibold">Sem ASO ({semAso.length})</p>
           <ul className="mt-1 space-y-1">
             {semAso.map((w) => (
@@ -106,7 +106,7 @@ export default async function SaudePage({ searchParams }: Props) {
             {!semAso.length && <li className="text-slate-500">Nenhum.</li>}
           </ul>
         </section>
-        <section className="rounded-lg border border-slate-200 bg-white p-4 text-sm">
+        <section className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
           <p className="font-semibold">Periódico vencido ou em 30 dias ({periodicos.length})</p>
           <ul className="mt-1 space-y-1">
             {periodicos.map(({ w, a }) => {
@@ -130,7 +130,7 @@ export default async function SaudePage({ searchParams }: Props) {
             {!periodicos.length && <li className="text-slate-500">Nenhum.</li>}
           </ul>
         </section>
-        <section className="rounded-lg border border-slate-200 bg-white p-4 text-sm">
+        <section className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
           <p className="font-semibold">Último ASO com restrição ou inapto ({restricoes.length})</p>
           <ul className="mt-1 space-y-1">
             {restricoes.map(({ w, a }) => (
@@ -143,7 +143,7 @@ export default async function SaudePage({ searchParams }: Props) {
           </ul>
         </section>
         {exames && (
-          <section className="rounded-lg border border-slate-200 bg-white p-4 text-sm">
+          <section className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
             <p className="font-semibold">Exames do PCMSO pendentes ({examesPend.length})</p>
             <ul className="mt-1 space-y-1">
               {examesPend.map(({ w, e, s }) => (
@@ -162,7 +162,7 @@ export default async function SaudePage({ searchParams }: Props) {
       </div>
 
       {lancaAso(org.role) && (
-        <form id="novo-aso" action={registrarAso} className="mt-8 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-3">
+        <form id="novo-aso" action={registrarAso} className="mt-8 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-3">
           <p className="font-semibold sm:col-span-3">Lançar ASO</p>
           <label className="text-sm">
             Trabalhador
@@ -221,7 +221,7 @@ export default async function SaudePage({ searchParams }: Props) {
       )}
 
       <h2 className="mt-8 text-lg font-semibold">Últimos ASOs</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {asos.slice(0, 30).map((a) => (
           <li key={a.id} className="px-4 py-2">
             {dataBR(a.issued_on)} ·{" "}

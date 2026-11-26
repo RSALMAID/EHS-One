@@ -35,14 +35,14 @@ export default async function DdsPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">DDS</h1>
+      <h1 className="titulo">DDS</h1>
       <p className="mt-1 text-sm text-slate-600">
         Diálogo Diário de Segurança. Registre o tema e quem participou; cada trabalhador confirma a presença no próprio
         celular (Meu EHS), ou você marca aqui. Para ter o registro em papel, imprima a lista.
       </p>
       <Erro mensagem={erro} />
 
-      <form action={criarDds} className="mt-4 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+      <form action={criarDds} className="mt-4 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
         <label className="sm:col-span-2">
           Tema
           <input name="titulo" required className="input mt-1" placeholder="Ex.: uso correto do protetor auricular" />
@@ -73,7 +73,7 @@ export default async function DdsPage({ searchParams }: Props) {
         </div>
       </form>
 
-      <ul className="mt-6 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-6 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {lista.map((d) => {
           const ok = d.dds_attendances.filter((a) => a.confirmed_at).length;
           return (

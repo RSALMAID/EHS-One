@@ -30,13 +30,13 @@ export default async function ComunicadosPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Comunicados</h1>
+      <h1 className="titulo">Comunicados</h1>
       <p className="mt-1 text-sm text-slate-600">
         Avisos que aparecem no Início do Meu EHS de todos, com o botão “Li e entendi”. Aqui você vê quantos já leram.
       </p>
       <Erro mensagem={erro} />
 
-      <form action={publicarComunicado} className="mt-4 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm">
+      <form action={publicarComunicado} className="mt-4 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
         <label>
           Título
           <input name="titulo" required className="input mt-1" placeholder="Ex.: simulado de abandono na sexta" />
@@ -56,7 +56,7 @@ export default async function ComunicadosPage({ searchParams }: Props) {
 
       <ul className="mt-6 space-y-3">
         {lista.map((c) => (
-          <li key={c.id} className="rounded-lg border border-slate-200 bg-white p-4 text-sm">
+          <li key={c.id} className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
             <div className="flex items-start justify-between gap-3">
               <p className="font-semibold">{c.title}</p>
               <form action={excluirComunicado}>

@@ -15,7 +15,7 @@ export function NovaInspecao({
   inspetor?: string;
 }) {
   return (
-    <form action={iniciarInspecao} className="grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+    <form action={iniciarInspecao} className="grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
       <input type="hidden" name="voltar" value={voltar} />
       <label>
         Checklist

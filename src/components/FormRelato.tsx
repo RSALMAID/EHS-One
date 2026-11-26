@@ -16,7 +16,7 @@ export function FormRelato({
 }) {
   const agora = new Date().toLocaleString("sv-SE", { timeZone: "America/Sao_Paulo" }).slice(0, 16).replace(" ", "T");
   return (
-    <form action={relatarEvento} className={`grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm ${celular ? "" : "sm:grid-cols-2"}`}>
+    <form action={relatarEvento} className={`grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm ${celular ? "" : "sm:grid-cols-2"}`}>
       <input type="hidden" name="voltar" value={voltar} />
       <label className={celular ? "" : "sm:col-span-2"}>
         O que foi

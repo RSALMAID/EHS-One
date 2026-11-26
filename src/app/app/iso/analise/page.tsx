@@ -99,7 +99,7 @@ export default async function AnalisePage({ searchParams }: Props) {
 
       <ul className="mt-4 space-y-3">
         {analises.map((a) => (
-          <li key={a.id} className="rounded-lg border border-slate-200 bg-white p-4 text-sm">
+          <li key={a.id} className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
             <details>
               <summary className="cursor-pointer font-medium text-emerald-800">
                 {dataBR(a.held_on)} · {NORMAS[a.standard]}
@@ -119,7 +119,7 @@ export default async function AnalisePage({ searchParams }: Props) {
           </li>
         ))}
         {!analises.length && (
-          <li className="rounded-lg border border-slate-200 bg-white px-4 py-6 text-center text-sm text-slate-500">
+          <li className="rounded-xl border border-slate-200 bg-white shadow-sm px-4 py-6 text-center text-sm text-slate-500">
             Nenhuma análise crítica registrada.
           </li>
         )}
@@ -127,7 +127,7 @@ export default async function AnalisePage({ searchParams }: Props) {
 
       <details className="mt-6" open={!analises.length}>
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">+ Nova análise crítica</summary>
-        <form action={salvarAnalise} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+        <form action={salvarAnalise} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
           <Campos entradas={entradas} />
           <div className="sm:col-span-2">
             <button className="btn">Registrar análise</button>

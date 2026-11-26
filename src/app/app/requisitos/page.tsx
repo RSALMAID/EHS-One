@@ -52,7 +52,7 @@ export default async function RequisitosPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Requisitos legais</h1>
+      <h1 className="titulo">Requisitos legais</h1>
       <p className="mt-1 text-sm text-slate-600">
         A lista das leis, normas e licenças que se aplicam à empresa, com a avaliação periódica de atendimento e as
         evidências. O que não for atendido vira ação no plano &quot;Requisitos legais&quot;.
@@ -86,7 +86,7 @@ export default async function RequisitosPage({ searchParams }: Props) {
         <Link href={filtro(area, "nao_aplica")} className={chip(situacao === "nao_aplica")}>Não se aplica</Link>
       </div>
 
-      <ul className="mt-4 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-4 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {lista.map((r) => {
           const s = SITUACAO_LEGAL[r.status];
           const prox = proximaAvaliacao(r.last_evaluated_on, r.review_months);
@@ -127,7 +127,7 @@ export default async function RequisitosPage({ searchParams }: Props) {
 
       <details className="mt-6">
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">+ Novo requisito</summary>
-        <form action={criarRequisito} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+        <form action={criarRequisito} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
           <CamposRequisito
             setores={setores}
             pessoas={(trabalhadores ?? []).map((t) => ({ id: t.id, label: t.full_name }))}

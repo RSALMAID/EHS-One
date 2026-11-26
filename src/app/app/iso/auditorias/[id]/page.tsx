@@ -56,7 +56,7 @@ export default async function AuditoriaPage({ params, searchParams }: Props) {
       )}
 
       <h2 className="mt-6 font-semibold">Constatações</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {constatacoes.map((f) => {
           const t = TIPOS_CONSTATACAO[f.kind];
           return (
@@ -83,7 +83,7 @@ export default async function AuditoriaPage({ params, searchParams }: Props) {
         {!constatacoes.length && <li className="px-4 py-6 text-center text-slate-500">Nenhuma constatação ainda.</li>}
       </ul>
 
-      <form action={adicionarConstatacao} className="mt-3 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-3">
+      <form action={adicionarConstatacao} className="mt-3 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-3">
         <input type="hidden" name="auditoria" value={id} />
         <label>
           Tipo
@@ -136,7 +136,7 @@ export default async function AuditoriaPage({ params, searchParams }: Props) {
       </form>
 
       <h2 className="mt-8 font-semibold">Dados da auditoria</h2>
-      <form action={salvarAuditoria} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-3">
+      <form action={salvarAuditoria} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-3">
         <input type="hidden" name="id" value={id} />
         <label>
           Norma

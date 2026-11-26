@@ -37,7 +37,7 @@ export default async function PainelPage({ searchParams }: Props) {
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">Indicadores de {ano}</h1>
+        <h1 className="titulo">Indicadores de {ano}</h1>
         <div className="flex items-center gap-2 text-sm print:hidden">
           {[anoAtual - 2, anoAtual - 1, anoAtual].map((a) => (
             <Link

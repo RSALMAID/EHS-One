@@ -102,7 +102,7 @@ export default async function GhePage({ params, searchParams }: Props) {
         </table>
       </div>
 
-      <form action={adicionarAvaliacao} className="mt-4 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-4">
+      <form action={adicionarAvaliacao} className="mt-4 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-4">
         <input type="hidden" name="ghe" value={g.id} />
         <p className="font-medium sm:col-span-4">Nova medição</p>
         <label className="sm:col-span-2">
@@ -160,7 +160,7 @@ export default async function GhePage({ params, searchParams }: Props) {
 
       <details className="mt-6">
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">Editar GHE</summary>
-        <form action={salvarGhe} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+        <form action={salvarGhe} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
           <input type="hidden" name="id" value={g.id} />
           <label>
             Nome

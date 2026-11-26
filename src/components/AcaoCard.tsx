@@ -24,7 +24,7 @@ export const CAMPOS_ACAO =
 export function AcaoCard({ a, evidencias, voltar, plano }: { a: AcaoLinha; evidencias: Evidencia[]; voltar: string; plano?: boolean }) {
   const s = prazo(a.due_date, a.status);
   return (
-    <li className="rounded-lg border border-slate-200 bg-white p-4 text-sm">
+    <li className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-xs text-slate-500">

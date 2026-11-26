@@ -42,7 +42,7 @@ export default async function RelatarPage({ searchParams }: Props) {
       </div>
 
       <h2 className="mt-6 font-semibold">Meus relatos</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {(meus ?? []).map((e) => (
           <li key={e.id} className="px-4 py-3">
             <p className="font-medium">

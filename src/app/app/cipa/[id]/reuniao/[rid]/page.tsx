@@ -50,7 +50,7 @@ export default async function ReuniaoPage({ params, searchParams }: Props) {
         </p>
       )}
 
-      <form action={salvarReuniao} className="mt-4 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+      <form action={salvarReuniao} className="mt-4 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
         <input type="hidden" name="id" value={rid} />
         <input type="hidden" name="gestao" value={id} />
         <label>
@@ -91,7 +91,7 @@ export default async function ReuniaoPage({ params, searchParams }: Props) {
       </form>
 
       <h2 className="mt-8 font-semibold">Ações desta reunião</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {(acoes ?? []).map((a) => (
           <li key={a.id} className="px-4 py-3">
             <Link href={`/app/acoes/plano/${r.plan_id}`} className="font-medium text-emerald-800 underline">
@@ -105,7 +105,7 @@ export default async function ReuniaoPage({ params, searchParams }: Props) {
         ))}
         {!acoes?.length && <li className="px-4 py-6 text-center text-slate-500">Nenhuma ação ainda.</li>}
       </ul>
-      <form action={criarAcaoReuniao} className="mt-3 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+      <form action={criarAcaoReuniao} className="mt-3 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
         <input type="hidden" name="id" value={rid} />
         <input type="hidden" name="gestao" value={id} />
         <label className="sm:col-span-2">

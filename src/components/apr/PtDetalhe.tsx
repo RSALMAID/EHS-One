@@ -108,7 +108,7 @@ export async function PtDetalhe({ id, base, erro }: { id: string; base: "/app" |
         <h2 className="font-semibold">Checklist de liberação</h2>
         <form action={responderChecklist} className="mt-2">
           <input type="hidden" name="voltar" value={voltar} />
-          <ul className="divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+          <ul className="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
             {(checks ?? []).map((c) => (
               <li key={c.id} className="px-4 py-2">
                 <p>{c.question}</p>

@@ -6,7 +6,7 @@ type Opcao = { id: string; label: string };
 
 export function NovaApr({ setores, voltar }: { setores: Opcao[]; voltar: string }) {
   return (
-    <form action={criarApr} className="grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+    <form action={criarApr} className="grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
       <input type="hidden" name="voltar" value={voltar} />
       <label className="sm:col-span-2">
         Tarefa
@@ -50,7 +50,7 @@ export function NovaPt({
   voltar: string;
 }) {
   return (
-    <form action={criarPt} className="grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+    <form action={criarPt} className="grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
       <input type="hidden" name="voltar" value={voltar} />
       <label>
         Tipo de serviço
