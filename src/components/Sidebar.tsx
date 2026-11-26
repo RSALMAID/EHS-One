@@ -1,122 +1,128 @@
 "use client";
 
+import { Lock, Menu, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { NAV } from "@/lib/nav";
-import { Icone } from "./Icone";
+import { itemAtual, itemLiberado, NAV } from "@/lib/nav";
+import { cn } from "@/lib/utils";
 
-const ICONE_GRUPO: Record<string, string> = {
-  Início: "inicio",
-  Cadastros: "cadastros",
-  Riscos: "riscos",
-  Operação: "operacao",
-  Gestão: "gestao",
-};
-
-/** Item ativo: a rota exata ou uma página dentro dela (o item mais específico vence). */
-function ativo(pathname: string, todos: string[], href: string) {
-  const casa = (h: string) => pathname === h || pathname.startsWith(`${h}/`);
-  if (!casa(href)) return false;
-  return !todos.some((h) => h !== href && h.length > href.length && casa(h));
-}
-
-function Lista({ modulos, aoNavegar }: { modulos: string[]; aoNavegar?: () => void }) {
+function Lista({ modulos, recolhido = false, aoNavegar }: { modulos: string[]; recolhido?: boolean; aoNavegar?: () => void }) {
   const pathname = usePathname();
-  const hrefs = NAV.flatMap((g) => g.items.map((i) => i.href).filter(Boolean)) as string[];
+  const atual = itemAtual(pathname)?.item.href;
+  const base = "flex items-center gap-2.5 rounded-md px-2 py-1.5";
   return (
-    <nav className="space-y-5 text-sm">
-      {NAV.map((group) => {
-        const livre = (m?: string) => !m || modulos.includes("*") || modulos.includes(m);
-        const itens = group.items;
-        return (
-          <div key={group.title}>
-            <p className="flex items-center gap-2 px-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
-              <Icone nome={ICONE_GRUPO[group.title] ?? "inicio"} className="h-4 w-4" />
-              {group.title}
-            </p>
-            <ul className="mt-1 space-y-0.5">
-              {itens.map((item) =>
-                item.href && !livre(item.module) ? (
+    <nav className={cn("text-sm", recolhido ? "space-y-3" : "space-y-5")}>
+      {NAV.map((group) => (
+        <div key={group.title}>
+          {recolhido ? (
+            <div className="mx-2 border-t border-slate-200" />
+          ) : (
+            <p className="px-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">{group.title}</p>
+          )}
+          <ul className="mt-1 space-y-0.5">
+            {group.items.map((item) => {
+              const Icone = item.icon;
+              const rotulo = recolhido ? <span className="sr-only">{item.label}</span> : <span className="truncate">{item.label}</span>;
+              if (!item.href) {
+                if (recolhido) return null;
+                return (
+                  <li key={item.label} className={cn(base, "text-slate-400")}>
+                    <Icone className="size-4 shrink-0" aria-hidden />
+                    <span className="flex-1 truncate">{item.label}</span>
+                    <span className="text-[10px]">{item.phase === "MVP" ? "em breve" : item.phase}</span>
+                  </li>
+                );
+              }
+              if (!itemLiberado(modulos, item.module)) {
+                return (
                   <li key={item.label}>
                     <Link
                       href={`/app/plano?modulo=${item.module}`}
                       onClick={aoNavegar}
-                      className="flex items-center justify-between rounded-md px-2 py-1.5 text-slate-400 hover:bg-slate-50"
-                      title="Não incluído no seu plano"
+                      title={`${item.label}: não incluído no seu plano`}
+                      className={cn(base, "text-slate-400 hover:bg-slate-100", recolhido && "justify-center")}
                     >
-                      {item.label}
-                      <span aria-label="não incluído no plano">🔒</span>
+                      <Icone className="size-4 shrink-0" aria-hidden />
+                      {rotulo}
+                      {!recolhido && <Lock className="ml-auto size-3.5 shrink-0" aria-label="não incluído no plano" />}
                     </Link>
                   </li>
-                ) : item.href ? (
-                  <li key={item.label}>
-                    <Link
-                      href={item.href}
-                      onClick={aoNavegar}
-                      aria-current={ativo(pathname, hrefs, item.href) ? "page" : undefined}
-                      className={`block rounded-md px-2 py-1.5 ${
-                        ativo(pathname, hrefs, item.href)
-                          ? "bg-emerald-50 font-medium text-emerald-800 ring-1 ring-emerald-100"
-                          : "text-slate-700 hover:bg-slate-100"
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ) : (
-                  <li key={item.label} className="flex items-center justify-between px-2 py-1 text-slate-400">
-                    {item.label}
-                    <span className="text-[10px]">{item.phase === "MVP" ? "em breve" : item.phase}</span>
-                  </li>
-                ),
-              )}
-            </ul>
-          </div>
-        );
-      })}
+                );
+              }
+              const ativo = atual === item.href;
+              return (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    onClick={aoNavegar}
+                    title={recolhido ? item.label : undefined}
+                    aria-current={ativo ? "page" : undefined}
+                    className={cn(
+                      base,
+                      recolhido && "justify-center",
+                      ativo
+                        ? "bg-emerald-50 font-medium text-emerald-800 ring-1 ring-emerald-100"
+                        : "text-slate-700 hover:bg-slate-100",
+                    )}
+                  >
+                    <Icone className={cn("size-4 shrink-0", ativo ? "text-emerald-700" : "text-slate-500")} aria-hidden />
+                    {rotulo}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
     </nav>
   );
 }
 
-/** Menu da Gestão: fixo à esquerda no computador; gaveta no celular. */
-export function Sidebar({ modulos, empresa }: { modulos: string[]; empresa: string }) {
+function Marca({ empresa, recolhido = false }: { empresa: string; recolhido?: boolean }) {
+  return (
+    <Link href="/app" className={cn("flex items-center gap-2", !recolhido && "px-2")} title="Início">
+      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-700 text-[11px] font-bold text-white">EHS</span>
+      {!recolhido && (
+        <span className="min-w-0">
+          <span className="block text-base font-semibold leading-tight text-slate-900">EHS One</span>
+          <span className="block max-w-40 truncate text-xs text-slate-500">{empresa}</span>
+        </span>
+      )}
+    </Link>
+  );
+}
+
+/** Menu da Gestão: fixo à esquerda no computador (recolhível); gaveta no celular. */
+export function Sidebar({ modulos, empresa, recolhidoInicial }: { modulos: string[]; empresa: string; recolhidoInicial: boolean }) {
   const [aberto, setAberto] = useState(false);
+  const [recolhido, setRecolhido] = useState(recolhidoInicial);
   const pathname = usePathname();
   useEffect(() => setAberto(false), [pathname]);
 
-  const marca = (
-    <Link href="/app" className="flex items-center gap-2 px-2">
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-700 text-xs font-bold text-white">EHS</span>
-      <span>
-        <span className="block text-base font-semibold leading-tight text-slate-900">EHS One</span>
-        <span className="block max-w-40 truncate text-xs text-slate-500">{empresa}</span>
-      </span>
-    </Link>
-  );
+  const alternar = () => {
+    const novo = !recolhido;
+    setRecolhido(novo);
+    document.cookie = `menu=${novo ? "recolhido" : "aberto"}; path=/; max-age=31536000; samesite=lax`;
+  };
 
   return (
     <>
       {/* Celular: barra com botão de menu */}
       <div className="sticky top-0 z-30 flex items-center justify-between border-b border-slate-200 bg-white px-3 py-2 md:hidden print:hidden">
-        {marca}
-        <button
-          type="button"
-          onClick={() => setAberto(true)}
-          className="rounded-md p-2 text-slate-700 hover:bg-slate-100"
-          aria-label="Abrir menu"
-        >
-          <Icone nome="menu" />
+        <Marca empresa={empresa} />
+        <button type="button" onClick={() => setAberto(true)} className="rounded-md p-2 text-slate-700 hover:bg-slate-100" aria-label="Abrir menu">
+          <Menu className="size-5" />
         </button>
       </div>
       {aberto && (
         <div className="fixed inset-0 z-40 md:hidden" role="dialog" aria-modal="true">
-          <button type="button" className="absolute inset-0 bg-slate-900/40" aria-label="Fechar menu" onClick={() => setAberto(false)} />
+          <button type="button" className="absolute inset-0 bg-black/50" aria-label="Fechar menu" onClick={() => setAberto(false)} />
           <aside className="absolute inset-y-0 left-0 w-72 overflow-y-auto bg-white p-4 shadow-xl">
             <div className="mb-6 flex items-center justify-between">
-              {marca}
+              <Marca empresa={empresa} />
               <button type="button" onClick={() => setAberto(false)} className="rounded-md p-2 text-slate-600 hover:bg-slate-100" aria-label="Fechar menu">
-                <Icone nome="fechar" />
+                <X className="size-5" />
               </button>
             </div>
             <Lista modulos={modulos} aoNavegar={() => setAberto(false)} />
@@ -124,10 +130,32 @@ export function Sidebar({ modulos, empresa }: { modulos: string[]; empresa: stri
         </div>
       )}
 
-      {/* Computador: coluna fixa */}
-      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 overflow-y-auto border-r border-slate-200 bg-white p-4 md:block print:hidden">
-        <div className="mb-6">{marca}</div>
-        <Lista modulos={modulos} />
+      {/* Computador: coluna fixa, larga ou só com ícones */}
+      <aside
+        className={cn(
+          "sticky top-0 hidden h-screen shrink-0 flex-col border-r border-slate-200 bg-white transition-[width] md:flex print:hidden",
+          recolhido ? "w-16" : "w-64",
+        )}
+      >
+        <div className={cn("flex h-14 items-center border-b border-slate-200", recolhido ? "justify-center" : "px-2")}>
+          <Marca empresa={empresa} recolhido={recolhido} />
+        </div>
+        <div className={cn("flex-1 overflow-y-auto py-4", recolhido ? "px-2" : "px-3")}>
+          <Lista modulos={modulos} recolhido={recolhido} />
+        </div>
+        <button
+          type="button"
+          onClick={alternar}
+          className={cn(
+            "flex items-center gap-2 border-t border-slate-200 px-4 py-3 text-xs text-slate-500 hover:bg-slate-50 hover:text-slate-800",
+            recolhido && "justify-center px-0",
+          )}
+          aria-label={recolhido ? "Abrir menu" : "Recolher menu"}
+          title={recolhido ? "Abrir menu" : "Recolher menu"}
+        >
+          {recolhido ? <PanelLeftOpen className="size-4" /> : <PanelLeftClose className="size-4" />}
+          {!recolhido && "Recolher menu"}
+        </button>
       </aside>
     </>
   );

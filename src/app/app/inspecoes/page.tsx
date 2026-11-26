@@ -47,7 +47,7 @@ export default async function InspecoesPage({ searchParams }: Props) {
       </div>
       <Erro mensagem={erro} />
 
-      <div className="mt-6">
+      <div id="novo" className="mt-6 scroll-mt-20">
         <NovaInspecao modelos={modelos ?? []} setores={setores} voltar="/app/inspecoes" />
         {!modelos?.length && (
           <p className="mt-2 text-sm text-slate-500">

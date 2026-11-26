@@ -86,7 +86,7 @@ export default async function EventosPage({ searchParams }: Props) {
         {!eventos.length && <li className="px-4 py-6 text-center text-slate-500">Nenhum registro neste filtro.</li>}
       </ul>
 
-      <h2 className="mt-8 text-lg font-semibold">Registrar</h2>
+      <h2 id="novo" className="mt-8 scroll-mt-20 text-lg font-semibold">Registrar</h2>
       <div className="mt-2">
         <FormRelato
           tipos={Object.entries(TIPOS_EVENTO).map(([k, t]) => [k, t.nome])}

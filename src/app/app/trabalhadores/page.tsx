@@ -55,7 +55,7 @@ export default async function TrabalhadoresPage({ searchParams }: Props) {
       </p>
       <Erro mensagem={erro} />
 
-      <form action={adicionarTrabalhador} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-2 lg:grid-cols-3">
+      <form id="novo" action={adicionarTrabalhador} className="mt-6 scroll-mt-20 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-2 lg:grid-cols-3">
         <label className="text-sm">
           Nome completo
           <input name="nome" required className="input mt-1" />

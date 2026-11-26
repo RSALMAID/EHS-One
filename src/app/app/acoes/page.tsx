@@ -52,7 +52,7 @@ export default async function PlanosPage({ searchParams }: Props) {
       </div>
       <Erro mensagem={erro} />
 
-      <form action={criarPlano} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-2">
+      <form id="novo" action={criarPlano} className="mt-6 scroll-mt-20 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-2">
         <p className="font-semibold sm:col-span-2">Novo plano</p>
         <label className="text-sm">
           Título
