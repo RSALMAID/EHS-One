@@ -57,6 +57,7 @@ export const NAV: NavGroup[] = [
       { label: "SESMT", href: "/app/sesmt", phase: "MVP", module: "cipa_sesmt" },
       { label: "Painel de indicadores", href: "/painel", phase: "MVP", module: "dashboard" },
       { label: "HHT", href: "/app/hht", phase: "MVP", module: "hht" },
+      { label: "ISO 45001 e 14001", href: "/app/iso", phase: "MVP", module: "iso" },
       { label: "Configurações", phase: "MVP" },
     ],
   },
