@@ -1,3 +1,5 @@
+import { VazioLista } from "@/components/EstadoVazio";
+import { BadgeCheck } from "lucide-react";
 import Link from "next/link";
 import { AvisoBanco } from "@/components/AvisoBanco";
 import { Erro } from "@/components/Erro";
@@ -179,7 +181,13 @@ export default async function AutorizacoesPage({ searchParams }: Props) {
             </li>
           );
         })}
-        {!lista.length && <li className="px-4 py-6 text-center text-slate-500">Nenhuma autorização aqui.</li>}
+        {!lista.length && (
+          <VazioLista
+            icone={BadgeCheck}
+            titulo="Nenhuma autorização aqui"
+            texto="Autorize trabalhadores para atividades de risco (NR-10, NR-33, NR-35…) com validade e evidência do treinamento."
+          />
+        )}
       </ul>
 
       <details className="mt-6" open={!todas.length}>

@@ -1,3 +1,5 @@
+import { VazioLista } from "@/components/EstadoVazio";
+import { FileWarning } from "lucide-react";
 import Link from "next/link";
 import { NovaApr } from "@/components/apr/Formularios";
 import { Erro } from "@/components/Erro";
@@ -77,7 +79,14 @@ export default async function AprsPage({ searchParams }: Props) {
             </li>
           );
         })}
-        {!aprs.length && <li className="px-4 py-6 text-center text-slate-500">Nenhuma APR aqui.</li>}
+        {!aprs.length && (
+          <VazioLista
+            icone={FileWarning}
+            titulo="Nenhuma APR aqui"
+            texto="A APR lista as etapas de uma tarefa, os perigos e as medidas de controle, e é assinada por quem vai executar."
+            acao={{ texto: "Criar APR", href: "/app/apr#novo" }}
+          />
+        )}
       </ul>
     </div>
   );

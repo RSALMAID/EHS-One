@@ -1,3 +1,5 @@
+import { VazioLista } from "@/components/EstadoVazio";
+import { UsersRound } from "lucide-react";
 import Link from "next/link";
 import { AvisoBanco } from "@/components/AvisoBanco";
 import { Erro } from "@/components/Erro";
@@ -58,7 +60,13 @@ export default async function CipaPage({ searchParams }: Props) {
             </li>
           );
         })}
-        {!gestoes.length && <li className="px-4 py-6 text-center text-slate-500">Nenhuma gestão cadastrada.</li>}
+        {!gestoes.length && (
+          <VazioLista
+            icone={UsersRound}
+            titulo="Nenhuma gestão da CIPA cadastrada"
+            texto="Cadastre o mandato, os membros e as reuniões; as ações das reuniões entram no plano de ação."
+          />
+        )}
       </ul>
 
       <details className="mt-6" open={!gestoes.length}>

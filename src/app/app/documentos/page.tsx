@@ -1,3 +1,5 @@
+import { VazioLista } from "@/components/EstadoVazio";
+import { FolderOpen } from "lucide-react";
 import Link from "next/link";
 import { Erro } from "@/components/Erro";
 import { CamposDocumento } from "@/components/FormDocumento";
@@ -71,7 +73,14 @@ export default async function DocumentosPage({ searchParams }: Props) {
             </li>
           );
         })}
-        {!docs.length && <li className="px-4 py-6 text-center text-slate-500">Nenhum documento ainda.</li>}
+        {!docs.length && (
+          <VazioLista
+            icone={FolderOpen}
+            titulo="Nenhum documento ainda"
+            texto="Guarde PGR, PCMSO, laudos e procedimentos com versão e validade. O sistema avisa antes de vencer."
+            acao={{ texto: "Incluir documento", href: "/app/documentos#novo" }}
+          />
+        )}
       </ul>
 
       <details id="novo" className="mt-6 scroll-mt-20" open={!docs.length}>

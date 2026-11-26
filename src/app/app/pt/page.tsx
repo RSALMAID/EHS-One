@@ -1,3 +1,5 @@
+import { VazioLista } from "@/components/EstadoVazio";
+import { FileKey } from "lucide-react";
 import Link from "next/link";
 import { NovaPt } from "@/components/apr/Formularios";
 import { Erro } from "@/components/Erro";
@@ -79,7 +81,14 @@ export default async function PtsPage({ searchParams }: Props) {
             </li>
           );
         })}
-        {!pts.length && <li className="px-4 py-6 text-center text-slate-500">Nenhuma PT aqui.</li>}
+        {!pts.length && (
+          <VazioLista
+            icone={FileKey}
+            titulo="Nenhuma permissão de trabalho aqui"
+            texto="A PT libera serviços de risco (altura, espaço confinado, quente, elétrica) depois do checklist e das assinaturas."
+            acao={{ texto: "Solicitar PT", href: "/app/pt#novo" }}
+          />
+        )}
       </ul>
     </div>
   );
