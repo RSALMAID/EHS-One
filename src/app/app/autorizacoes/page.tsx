@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AvisoBanco } from "@/components/AvisoBanco";
 import { Erro } from "@/components/Erro";
 import { rotuloAutorizacao, situacaoAutorizacao, TIPOS_AUTORIZACAO } from "@/lib/autorizacoes";
 import { dataBR, hoje } from "@/lib/datas";
@@ -36,7 +37,7 @@ export default async function AutorizacoesPage({ searchParams }: Props) {
   const { erro, ok, ver = "todas" } = await searchParams;
   const org = await requireOrg();
   const supabase = await createClient();
-  const [{ data }, { data: trabalhadores }, { data: treinos }, { data: presencas }] = await Promise.all([
+  const [{ data, error: falha }, { data: trabalhadores }, { data: treinos }, { data: presencas }] = await Promise.all([
     supabase
       .from("work_authorizations")
       .select("id, worker_id, kind, scope, training_id, issued_on, valid_until, issued_by, revoked_on, revoked_reason, file_path, file_name, workers(full_name)")
@@ -88,6 +89,7 @@ export default async function AutorizacoesPage({ searchParams }: Props) {
         <Link href="/app/treinamentos" className="underline">Treinamentos</Link>.
       </p>
       <Erro mensagem={erro} />
+      <AvisoBanco erros={[falha]} script="0017_autorizacoes.sql" />
       {ok && <p className="mt-3 rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-800">Autorização salva.</p>}
       {atencao > 0 && (
         <p className="mt-3 rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">

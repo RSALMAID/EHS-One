@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AvisoBanco } from "@/components/AvisoBanco";
 import { Erro } from "@/components/Erro";
 import { CARGOS_SESMT } from "@/lib/cipa";
 import { dataBR, hoje } from "@/lib/datas";
@@ -12,7 +13,7 @@ export default async function SesmtPage({ searchParams }: Props) {
   const { erro } = await searchParams;
   const org = await requireOrg();
   const supabase = await createClient();
-  const [{ data }, { data: trabalhadores }] = await Promise.all([
+  const [{ data, error: falha }, { data: trabalhadores }] = await Promise.all([
     supabase.from("sesmt_members").select("*").eq("organization_id", org.id).order("name"),
     supabase.from("workers").select("id, full_name").eq("organization_id", org.id).eq("active", true).order("full_name"),
   ]);
@@ -32,6 +33,7 @@ export default async function SesmtPage({ searchParams }: Props) {
         NR-04). A CIPA fica em <Link href="/app/cipa" className="underline">CIPA</Link>.
       </p>
       <Erro mensagem={erro} />
+      <AvisoBanco erros={[falha]} script="0015_cipa_sesmt.sql" />
       {porFuncao.length > 0 && (
         <p className="mt-3 text-sm text-slate-700">Em atividade: {porFuncao.map((x) => `${x.n} ${x.l.toLowerCase()}`).join(" · ")}</p>
       )}

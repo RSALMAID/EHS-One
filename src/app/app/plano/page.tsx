@@ -1,3 +1,4 @@
+import { AvisoBanco } from "@/components/AvisoBanco";
 import { Erro } from "@/components/Erro";
 import { dataBR } from "@/lib/datas";
 import { liberado, modulosLiberados } from "@/lib/modulos";
@@ -12,7 +13,7 @@ export default async function PlanoPage({ searchParams }: Props) {
   const { erro, ok, modulo } = await searchParams;
   const org = await requireOrg();
   const supabase = await createClient();
-  const [{ planos, modulos, inclui }, liberados, { data: pedidos }] = await Promise.all([
+  const [{ planos, modulos, inclui }, liberados, { data: pedidos, error: falha }] = await Promise.all([
     catalogo(),
     modulosLiberados(org.id),
     supabase
@@ -37,6 +38,7 @@ export default async function PlanoPage({ searchParams }: Props) {
         quando o módulo é liberado.
       </p>
       <Erro mensagem={erro} />
+      <AvisoBanco erros={[falha]} script="0019_planos.sql" />
       {ok && (
         <p className="mt-3 rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
           Pedido enviado. A equipe EHS One vai entrar em contato para combinar a mudança.

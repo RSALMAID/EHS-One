@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AvisoBanco } from "@/components/AvisoBanco";
 import { Erro } from "@/components/Erro";
 import { dataBR, hoje } from "@/lib/datas";
 import { requireOrg } from "@/lib/org";
@@ -21,7 +22,7 @@ export default async function CipaPage({ searchParams }: Props) {
   const { erro } = await searchParams;
   const org = await requireOrg();
   const supabase = await createClient();
-  const [{ data }, { data: unidades }] = await Promise.all([
+  const [{ data, error: falha }, { data: unidades }] = await Promise.all([
     supabase
       .from("cipa_mandates")
       .select("id, name, starts_on, ends_on, units(name), cipa_members(id), cipa_meetings(id)")
@@ -41,6 +42,7 @@ export default async function CipaPage({ searchParams }: Props) {
         <Link href="/app/sesmt" className="underline">SESMT</Link>.
       </p>
       <Erro mensagem={erro} />
+      <AvisoBanco erros={[falha]} script="0015_cipa_sesmt.sql" />
 
       <ul className="mt-4 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {gestoes.map((g) => {

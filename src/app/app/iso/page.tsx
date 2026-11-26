@@ -1,3 +1,4 @@
+import { AvisoBanco } from "@/components/AvisoBanco";
 import Link from "next/link";
 import { dataBR, hoje } from "@/lib/datas";
 import { CLAUSULAS, numeroAuditoria } from "@/lib/iso";
@@ -7,7 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 export default async function IsoPage() {
   const org = await requireOrg();
   const supabase = await createClient();
-  const [{ data: objetivos }, { data: auditorias }, { data: analises }] = await Promise.all([
+  const [{ data: objetivos, error: falha }, { data: auditorias }, { data: analises }] = await Promise.all([
     supabase.from("iso_objectives").select("status").eq("organization_id", org.id),
     supabase
       .from("audits")
@@ -44,6 +45,7 @@ export default async function IsoPage() {
   return (
     <div>
       <h1 className="titulo">ISO 45001 e ISO 14001</h1>
+      <AvisoBanco erros={[falha]} script="0018_iso.sql" />
       <p className="mt-1 text-sm text-slate-600">
         Os módulos do sistema já cobrem a maior parte do que as duas normas pedem. Aqui ficam o que é próprio do sistema de
         gestão: objetivos e metas, auditorias e análise crítica pela direção. O quadro abaixo mostra onde cada requisito é

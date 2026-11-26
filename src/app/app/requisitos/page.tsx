@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AvisoBanco } from "@/components/AvisoBanco";
 import { Erro } from "@/components/Erro";
 import { CamposRequisito } from "@/components/FormRequisito";
 import { dataBR, hoje } from "@/lib/datas";
@@ -14,7 +15,7 @@ export default async function RequisitosPage({ searchParams }: Props) {
   const { erro, ok, area, situacao } = await searchParams;
   const org = await requireOrg();
   const supabase = await createClient();
-  const [{ data }, setores, { data: trabalhadores }] = await Promise.all([
+  const [{ data, error: falha }, setores, { data: trabalhadores }] = await Promise.all([
     supabase
       .from("legal_requirements")
       .select("id, area, source, title, applicable, status, last_evaluated_on, review_months")
@@ -58,6 +59,7 @@ export default async function RequisitosPage({ searchParams }: Props) {
         evidências. O que não for atendido vira ação no plano &quot;Requisitos legais&quot;.
       </p>
       <Erro mensagem={erro} />
+      <AvisoBanco erros={[falha]} script="0016_requisitos_legais.sql" />
       {ok && (
         <p className="mt-3 rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
           {ok === "0" ? "A lista básica já estava toda incluída." : `${ok} requisito(s) incluído(s). Revise e marque o que não se aplica.`}
