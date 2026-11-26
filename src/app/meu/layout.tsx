@@ -1,29 +1,33 @@
 import Link from "next/link";
+import { AbasMeu } from "@/components/AbasMeu";
 import { sair } from "@/app/entrar/actions";
 import { liberado, modulosLiberados } from "@/lib/modulos";
 import { ehEquipe, requireOrg } from "@/lib/org";
 
 const ABAS = [
-  { href: "/meu", label: "Início" },
-  { href: "/meu/relatar", label: "Relatar", module: "eventos" },
-  { href: "/meu/apr", label: "APR/PT", module: "apr_pt" },
-  { href: "/meu/acoes", label: "Ações", module: "acoes" },
-  { href: "/meu/epis", label: "EPIs", module: "epi" },
-  { href: "/meu/saude", label: "Saúde", module: "saude" },
+  { href: "/meu", label: "Início", icone: "inicio" },
+  { href: "/meu/relatar", label: "Relatar", icone: "relatar", module: "eventos" },
+  { href: "/meu/apr", label: "APR/PT", icone: "tarefa", module: "apr_pt" },
+  { href: "/meu/acoes", label: "Ações", icone: "acoes", module: "acoes" },
+  { href: "/meu/epis", label: "EPIs", icone: "epi", module: "epi" },
+  { href: "/meu/saude", label: "Saúde", icone: "saude", module: "saude" },
 ];
 
 export default async function MeuLayout({ children }: { children: React.ReactNode }) {
   const org = await requireOrg();
   const equipe = ehEquipe(org.role);
   const modulos = await modulosLiberados(org.id);
-  const abas = ABAS.filter((a) => liberado(modulos, a.module));
+  const abas = ABAS.filter((a) => liberado(modulos, a.module)).map(({ href, label, icone }) => ({ href, label, icone }));
 
   return (
-    <div className="mx-auto min-h-screen max-w-lg pb-20">
-      <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
-        <div>
-          <p className="text-base font-semibold text-emerald-800">Meu EHS</p>
-          <p className="text-xs text-slate-500">{org.name}</p>
+    <div className="mx-auto min-h-screen max-w-lg pb-24">
+      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
+        <div className="flex items-center gap-2">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-700 text-xs font-bold text-white">EHS</span>
+          <div>
+            <p className="text-base font-semibold leading-tight text-slate-900">Meu EHS</p>
+            <p className="max-w-48 truncate text-xs text-slate-500">{org.name}</p>
+          </div>
         </div>
         <div className="flex items-center gap-4 text-sm">
           {equipe && <Link href="/app" className="text-emerald-700">Gestão</Link>}
@@ -44,17 +48,7 @@ export default async function MeuLayout({ children }: { children: React.ReactNod
           </div>
         )}
       </main>
-      <nav className="fixed inset-x-0 bottom-0 border-t border-slate-200 bg-white">
-        <ul className="mx-auto flex max-w-lg text-center text-xs">
-          {abas.map((a) => (
-            <li key={a.href} className="flex-1">
-              <Link href={a.href} className="block px-1 py-3 font-medium text-slate-700 active:bg-slate-100">
-                {a.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <AbasMeu abas={abas} />
     </div>
   );
 }
