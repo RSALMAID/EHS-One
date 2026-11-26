@@ -1,3 +1,5 @@
+import { VazioLista } from "@/components/EstadoVazio";
+import { MessagesSquare } from "lucide-react";
 import Link from "next/link";
 import { Erro } from "@/components/Erro";
 import { dataBR, hoje } from "@/lib/datas";
@@ -89,7 +91,14 @@ export default async function DdsPage({ searchParams }: Props) {
             </li>
           );
         })}
-        {!lista.length && <li className="px-4 py-6 text-center text-slate-500">Nenhum DDS ainda.</li>}
+        {!lista.length && (
+          <VazioLista
+            icone={MessagesSquare}
+            titulo="Nenhum DDS ainda"
+            texto="Registre o diálogo de segurança; cada participante confirma a presença no próprio celular."
+            acao={{ texto: "Registrar DDS", href: "/app/dds#novo" }}
+          />
+        )}
       </ul>
     </div>
   );

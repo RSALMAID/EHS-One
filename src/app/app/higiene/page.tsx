@@ -1,3 +1,5 @@
+import { VazioLista } from "@/components/EstadoVazio";
+import { FlaskConical } from "lucide-react";
 import Link from "next/link";
 import { Erro } from "@/components/Erro";
 import { dataBR } from "@/lib/datas";
@@ -78,7 +80,13 @@ export default async function HigienePage({ searchParams }: Props) {
             </li>
           );
         })}
-        {!ghes.length && <li className="px-4 py-6 text-center text-slate-500">Nenhum GHE ainda.</li>}
+        {!ghes.length && (
+          <VazioLista
+            icone={FlaskConical}
+            titulo="Nenhum GHE ainda"
+            texto="Crie os grupos homogêneos de exposição e lance as medições de ruído, calor, poeira e químicos."
+          />
+        )}
       </ul>
 
       <details className="mt-6" open={!ghes.length}>

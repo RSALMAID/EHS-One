@@ -1,3 +1,5 @@
+import { VazioLista } from "@/components/EstadoVazio";
+import { GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { Erro } from "@/components/Erro";
 import { dataBR } from "@/lib/datas";
@@ -92,7 +94,13 @@ export default async function TreinamentosPage({ searchParams }: Props) {
             <p className="text-slate-500">Exigido para: {cargosDo(t.id) || "nenhum cargo ainda"}</p>
           </li>
         ))}
-        {!treinamentos?.length && <li className="px-4 py-6 text-center text-slate-500">Nenhum treinamento cadastrado.</li>}
+        {!treinamentos?.length && (
+          <VazioLista
+            icone={GraduationCap}
+            titulo="Nenhum treinamento cadastrado"
+            texto="Cadastre os treinamentos (NR-35, NR-10, integração…) com carga horária e validade; depois abra turmas."
+          />
+        )}
       </ul>
 
       <h2 className="mt-8 text-lg font-semibold">Últimas turmas</h2>

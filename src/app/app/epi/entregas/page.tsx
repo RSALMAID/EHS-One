@@ -1,3 +1,5 @@
+import { VazioLista } from "@/components/EstadoVazio";
+import { HardHat } from "lucide-react";
 import Link from "next/link";
 import { Assinatura } from "@/lib/assinatura";
 import { Erro } from "@/components/Erro";
@@ -127,7 +129,13 @@ export default async function EntregasPage({ searchParams }: Props) {
             </form>
           </li>
         ))}
-        {!linhas.length && <li className="px-4 py-6 text-center text-slate-500">Nenhuma entrega ainda.</li>}
+        {!linhas.length && (
+          <VazioLista
+            icone={HardHat}
+            titulo="Nenhuma entrega ainda"
+            texto="Registre a entrega de EPI; o trabalhador assina no celular e a ficha fica pronta para imprimir."
+          />
+        )}
       </ul>
     </div>
   );

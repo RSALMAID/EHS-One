@@ -1,3 +1,5 @@
+import { Clock } from "lucide-react";
+import { VazioTabela } from "@/components/EstadoVazio";
 import Link from "next/link";
 import { Erro } from "@/components/Erro";
 import { hoje } from "@/lib/datas";
@@ -81,9 +83,12 @@ export default async function HhtPage({ searchParams }: Props) {
             </tr>
           ))}
           {!data?.length && (
-            <tr>
-              <td colSpan={5} className="px-3 py-6 text-center text-slate-500">Nenhum mês lançado ainda.</td>
-            </tr>
+            <VazioTabela
+              colunas={5}
+              icone={Clock}
+              titulo="Nenhum mês lançado ainda"
+              texto="Lance as horas trabalhadas de cada mês: elas são a base das taxas de frequência e de gravidade."
+            />
           )}
         </tbody>
       </table>

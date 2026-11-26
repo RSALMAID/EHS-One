@@ -1,3 +1,5 @@
+import { VazioLista } from "@/components/EstadoVazio";
+import { ClipboardCheck } from "lucide-react";
 import Link from "next/link";
 import { Erro } from "@/components/Erro";
 import { NovaInspecao } from "@/components/inspecao/NovaInspecao";
@@ -76,7 +78,13 @@ export default async function InspecoesPage({ searchParams }: Props) {
             </li>
           );
         })}
-        {!inspecoes.length && <li className="px-4 py-6 text-center text-slate-500">Nenhuma inspeção ainda.</li>}
+        {!inspecoes.length && (
+          <VazioLista
+            icone={ClipboardCheck}
+            titulo="Nenhuma inspeção ainda"
+            texto="Escolha um modelo de checklist acima e responda no local. Cada não conformidade vira uma ação."
+          />
+        )}
       </ul>
     </div>
   );

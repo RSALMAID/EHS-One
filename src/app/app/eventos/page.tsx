@@ -1,3 +1,5 @@
+import { VazioLista } from "@/components/EstadoVazio";
+import { Siren } from "lucide-react";
 import Link from "next/link";
 import { Erro } from "@/components/Erro";
 import { FormRelato } from "@/components/FormRelato";
@@ -83,7 +85,14 @@ export default async function EventosPage({ searchParams }: Props) {
             )}
           </li>
         ))}
-        {!eventos.length && <li className="px-4 py-6 text-center text-slate-500">Nenhum registro neste filtro.</li>}
+        {!eventos.length && (
+          <VazioLista
+            icone={Siren}
+            titulo="Nenhum registro neste filtro"
+            texto="Registre acidentes, quase acidentes e desvios. Quanto mais relatos de quase acidentes, menos acidentes."
+            acao={{ texto: "Registrar evento", href: "/app/eventos#novo" }}
+          />
+        )}
       </ul>
 
       <h2 id="novo" className="mt-8 scroll-mt-20 text-lg font-semibold">Registrar</h2>

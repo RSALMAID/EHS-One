@@ -1,3 +1,5 @@
+import { VazioLista } from "@/components/EstadoVazio";
+import { Award } from "lucide-react";
 import Link from "next/link";
 import { Erro } from "@/components/Erro";
 import { dataBR, hoje } from "@/lib/datas";
@@ -49,7 +51,13 @@ export default async function AuditoriasPage({ searchParams }: Props) {
             </li>
           );
         })}
-        {!data?.length && <li className="px-4 py-6 text-center text-slate-500">Nenhuma auditoria registrada.</li>}
+        {!data?.length && (
+          <VazioLista
+            icone={Award}
+            titulo="Nenhuma auditoria registrada"
+            texto="Planeje auditorias internas por cláusula da ISO 45001 ou 14001; as constatações viram ações."
+          />
+        )}
       </ul>
 
       <details className="mt-6" open={!data?.length}>
