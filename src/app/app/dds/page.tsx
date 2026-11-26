@@ -42,7 +42,7 @@ export default async function DdsPage({ searchParams }: Props) {
       </p>
       <Erro mensagem={erro} />
 
-      <form action={criarDds} className="mt-4 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
+      <form id="novo" action={criarDds} className="mt-4 scroll-mt-20 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
         <label className="sm:col-span-2">
           Tema
           <input name="titulo" required className="input mt-1" placeholder="Ex.: uso correto do protetor auricular" />

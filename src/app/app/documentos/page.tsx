@@ -74,7 +74,7 @@ export default async function DocumentosPage({ searchParams }: Props) {
         {!docs.length && <li className="px-4 py-6 text-center text-slate-500">Nenhum documento ainda.</li>}
       </ul>
 
-      <details className="mt-6" open={!docs.length}>
+      <details id="novo" className="mt-6 scroll-mt-20" open={!docs.length}>
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">+ Novo documento</summary>
         <form action={criarDocumento} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
           <CamposDocumento setores={setores} />

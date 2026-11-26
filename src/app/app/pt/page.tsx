@@ -47,7 +47,7 @@ export default async function PtsPage({ searchParams }: Props) {
       </p>
       <Erro mensagem={erro} />
 
-      <details className="mt-4">
+      <details id="novo" className="mt-4 scroll-mt-20">
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">+ Nova PT</summary>
         <div className="mt-2">
           <NovaPt setores={setores} aprs={aprs ?? []} voltar="/app/pt" />
