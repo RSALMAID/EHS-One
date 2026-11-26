@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { getSupabaseEnv, MISSING_ENV_MESSAGE } from "./env";
 
-const PROTECTED = ["/app", "/meu", "/onboarding"];
+const PROTECTED = ["/app", "/meu", "/painel", "/onboarding"];
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
