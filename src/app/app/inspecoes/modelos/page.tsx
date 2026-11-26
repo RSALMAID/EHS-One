@@ -2,7 +2,9 @@ import Link from "next/link";
 import { Erro } from "@/components/Erro";
 import { requireOrg } from "@/lib/org";
 import { createClient } from "@/lib/supabase/server";
-import { criarModelo, criarModelosExemplo } from "../actions";
+import { criarModelo, criarModelosExemplo, usarModeloBiblioteca } from "../actions";
+import { AvisoBanco } from "@/components/AvisoBanco";
+import { type ConteudoChecklist } from "@/lib/inspecao";
 
 type Props = { searchParams: Promise<{ erro?: string }> };
 
@@ -10,19 +12,30 @@ export default async function ModelosPage({ searchParams }: Props) {
   const { erro } = await searchParams;
   const org = await requireOrg();
   const supabase = await createClient();
-  const { data: modelos } = await supabase
-    .from("checklist_templates")
-    .select("id, name, description, active, checklist_items(count)")
-    .eq("organization_id", org.id)
-    .order("active", { ascending: false })
-    .order("name");
+  const [{ data: modelos }, { data: biblioteca, error: falha }] = await Promise.all([
+    supabase
+      .from("checklist_templates")
+      .select("id, name, description, active, library_code, checklist_items(count)")
+      .eq("organization_id", org.id)
+      .order("active", { ascending: false })
+      .order("name"),
+    supabase.from("model_library").select("code, title, category, content").eq("kind", "checklist").order("sort"),
+  ]);
   const lista = (modelos ?? []) as unknown as {
     id: string;
     name: string;
     description: string | null;
     active: boolean;
+    library_code: string | null;
     checklist_items: { count: number }[];
   }[];
+  const usados = new Set(lista.map((m) => m.library_code).filter(Boolean));
+  const categorias = new Map<string, { code: string; title: string; itens: number }[]>();
+  for (const b of biblioteca ?? []) {
+    const c = b.category ?? "Outros";
+    if (!categorias.has(c)) categorias.set(c, []);
+    categorias.get(c)!.push({ code: b.code, title: b.title, itens: (b.content as ConteudoChecklist).itens?.length ?? 0 });
+  }
 
   return (
     <div>
@@ -59,6 +72,38 @@ export default async function ModelosPage({ searchParams }: Props) {
           </li>
         ))}
       </ul>
+
+      <h2 id="biblioteca" className="mt-10 text-lg font-semibold text-slate-900">Biblioteca EHS One</h2>
+      <p className="subtitulo">
+        Checklists prontos de equipamentos, com resposta Sim, Não ou N/A. &quot;Não&quot; exige observação e vira ação. Ao usar,
+        uma cópia entra na sua lista e pode ser editada.
+      </p>
+      <AvisoBanco erros={[falha]} script="0020_modelos_inspecao.sql" />
+      <div className="mt-4 space-y-5">
+        {[...categorias].map(([cat, itens]) => (
+          <div key={cat}>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">{cat}</h3>
+            <ul className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {itens.map((b) => (
+                <li key={b.code} className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm">
+                  <span className="min-w-0">
+                    <span className="block truncate font-medium text-slate-900">{b.title}</span>
+                    <span className="text-xs text-slate-500">{b.code} · {b.itens} itens</span>
+                  </span>
+                  {usados.has(b.code) ? (
+                    <span className="shrink-0 text-xs text-emerald-700">na sua lista</span>
+                  ) : (
+                    <form action={usarModeloBiblioteca}>
+                      <input type="hidden" name="codigo" value={b.code} />
+                      <button className="btn-ghost shrink-0 px-3 py-1 text-xs">Usar</button>
+                    </form>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
