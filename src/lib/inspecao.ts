@@ -1,7 +1,23 @@
 export const RESPOSTAS: Record<string, { texto: string; classe: string }> = {
-  conforme: { texto: "Conforme", classe: "text-emerald-700" },
-  nao_conforme: { texto: "Não conforme", classe: "text-red-700 font-semibold" },
-  na: { texto: "Não se aplica", classe: "text-slate-500" },
+  conforme: { texto: "Sim", classe: "text-emerald-700" },
+  nao_conforme: { texto: "Não", classe: "text-red-700 font-semibold" },
+  na: { texto: "N/A", classe: "text-slate-500" },
+};
+
+/** Atendimento = Sim ÷ (Sim + Não). Itens N/A não entram no cálculo. */
+export function atendimento(respostas: { answer: string | null }[]) {
+  const sim = respostas.filter((r) => r.answer === "conforme").length;
+  const nao = respostas.filter((r) => r.answer === "nao_conforme").length;
+  return { sim, nao, na: respostas.filter((r) => r.answer === "na").length, pct: sim + nao ? Math.round((sim / (sim + nao)) * 100) : null };
+}
+
+export const numeroInspecao = (n: number) => `I-${String(n).padStart(4, "0")}`;
+
+/** Conteúdo de um modelo da biblioteca do tipo checklist. */
+export type ConteudoChecklist = {
+  equipamento?: string;
+  itens: { pergunta: string; obrigatorio?: boolean }[];
+  assinaturas?: string[];
 };
 
 /** Modelos iniciais, para a empresa não começar do zero. Podem ser editados. */

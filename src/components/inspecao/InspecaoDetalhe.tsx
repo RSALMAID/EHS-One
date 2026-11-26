@@ -3,10 +3,12 @@ import { notFound } from "next/navigation";
 import { BotaoImprimir } from "@/components/BotaoImprimir";
 import { Erro } from "@/components/Erro";
 import { dataBR } from "@/lib/datas";
-import { RESPOSTAS } from "@/lib/inspecao";
+import { atendimento, numeroInspecao, RESPOSTAS } from "@/lib/inspecao";
+import { QuadroAssinatura } from "@/components/QuadroAssinatura";
+import { dataHora } from "@/lib/apr";
 import { requireOrg } from "@/lib/org";
 import { createClient } from "@/lib/supabase/server";
-import { excluirInspecao, reabrirInspecao, salvarRespostas } from "@/app/app/inspecoes/actions";
+import { assinarInspecao, excluirInspecao, reabrirInspecao, salvarRespostas } from "@/app/app/inspecoes/actions";
 import { podeAprovar } from "@/lib/apr";
 
 
@@ -19,8 +21,23 @@ type Inspecao = {
   inspector: string | null;
   status: string;
   notes: string | null;
-  checklist_templates: { name: string } | null;
+  equipment_tag: string | null;
+  inspected_at: string | null;
+  inspector_document: string | null;
+  company_name: string | null;
+  checklist_templates: { name: string; equipment: string | null; signature_roles: string[] | null } | null;
   sectors: { name: string } | null;
+};
+type Assinatura = {
+  id: string;
+  role: string;
+  signer_name: string;
+  signer_document: string;
+  image: string;
+  signed_at: string;
+  ip: string | null;
+  device: string | null;
+  hash: string;
 };
 type Resposta = {
   id: string;
@@ -41,10 +58,12 @@ export async function InspecaoDetalhe({ id, base, erro, ok }: { id: string; base
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const [{ data: insp }, { data: resp }] = await Promise.all([
+  const [{ data: insp }, { data: resp }, { data: ass }] = await Promise.all([
     supabase
       .from("inspections")
-      .select("id, number, location, created_by, inspected_on, inspector, status, notes, checklist_templates(name), sectors(name)")
+      .select(
+        "id, number, location, created_by, inspected_on, inspector, status, notes, equipment_tag, inspected_at, inspector_document, company_name, checklist_templates(name, equipment, signature_roles), sectors(name)",
+      )
       .eq("id", id)
       .maybeSingle(),
     supabase
@@ -52,6 +71,11 @@ export async function InspecaoDetalhe({ id, base, erro, ok }: { id: string; base
       .select("id, position, question, answer, comment, photo_path, photo_name, action_id, actions(number, status, plan_id)")
       .eq("inspection_id", id)
       .order("position"),
+    supabase
+      .from("inspection_signatures")
+      .select("id, role, signer_name, signer_document, image, signed_at, ip, device, hash")
+      .eq("inspection_id", id)
+      .order("signed_at"),
   ]);
   if (!insp) notFound();
   const i = insp as unknown as Inspecao;
@@ -59,6 +83,11 @@ export async function InspecaoDetalhe({ id, base, erro, ok }: { id: string; base
   const concluida = i.status === "concluida";
   const equipe = podeAprovar(org.role);
   const editavel = !concluida && (equipe || i.created_by === user?.id);
+  const assinaturas = (ass ?? []) as Assinatura[];
+  const assinada = assinaturas.length > 0;
+  const papeis = i.checklist_templates?.signature_roles?.length ? i.checklist_templates.signature_roles : ["Inspetor"];
+  const faltaAssinar = papeis.filter((p) => !assinaturas.some((a) => a.role === p));
+  const at = atendimento(respostas);
   const voltar = `${base}/inspecoes/${i.id}`;
   const caminhos = respostas.map((r) => r.photo_path).filter(Boolean) as string[];
   const fotos = new Map<string, string>();
@@ -67,9 +96,6 @@ export async function InspecaoDetalhe({ id, base, erro, ok }: { id: string; base
     for (const f of assinadas ?? []) if (f.path && f.signedUrl) fotos.set(f.path, f.signedUrl);
   }
   const nAcoes = Number(ok?.split("-")[1] ?? 0);
-  const contagem = (r: string) => respostas.filter((x) => x.answer === r).length;
-  const aplicaveis = respostas.length - contagem("na");
-  const indice = aplicaveis ? Math.round((contagem("conforme") / aplicaveis) * 100) : 0;
 
   return (
     <div>
@@ -78,20 +104,29 @@ export async function InspecaoDetalhe({ id, base, erro, ok }: { id: string; base
         <BotaoImprimir />
       </div>
       <h1 className="mt-3 text-xl font-bold">
-        I-{String(i.number).padStart(4, "0")} · {i.checklist_templates?.name}
+        {numeroInspecao(i.number)} · {i.checklist_templates?.name}
+        {i.equipment_tag ? ` · ${i.equipment_tag}` : ""}
       </h1>
-      <p className="text-sm text-slate-600">
-        {org.name} · {dataBR(i.inspected_on)}
-        {i.sectors ? ` · ${i.sectors.name}` : ""}
-        {i.location ? ` · ${i.location}` : ""}
-        {i.inspector ? ` · inspetor: ${i.inspector}` : ""} ·{" "}
-        {concluida ? "concluída" : "em andamento"}
-      </p>
+      <dl className="mt-2 grid gap-x-6 gap-y-1 text-sm text-slate-600 sm:grid-cols-3">
+        <div><dt className="inline text-slate-400">Data e hora: </dt><dd className="inline">{dataBR(i.inspected_on)}{i.inspected_at ? ` ${i.inspected_at.slice(0, 5)}` : ""}</dd></div>
+        <div><dt className="inline text-slate-400">Local: </dt><dd className="inline">{[i.sectors?.name, i.location].filter(Boolean).join(" · ") || "—"}</dd></div>
+        <div><dt className="inline text-slate-400">Empresa: </dt><dd className="inline">{i.company_name ?? org.name}</dd></div>
+        <div><dt className="inline text-slate-400">Inspetor: </dt><dd className="inline">{i.inspector ?? "—"}{i.inspector_document ? ` (${i.inspector_document})` : ""}</dd></div>
+        <div><dt className="inline text-slate-400">Situação: </dt><dd className="inline">{assinada ? "concluída e assinada" : concluida ? "concluída" : "em andamento"}</dd></div>
+      </dl>
       {concluida && (
-        <p className="mt-1 text-sm">
-          Conformidade: <strong>{indice}%</strong> ({contagem("conforme")} conformes, {contagem("nao_conforme")} não
-          conformes, {contagem("na")} não se aplicam)
-        </p>
+        <div className="mt-3 rounded-lg border border-slate-200 bg-white p-3 text-sm">
+          <p>
+            Atendimento: <strong>{at.pct === null ? "—" : `${at.pct}%`}</strong> ({at.sim} Sim, {at.nao} Não, {at.na} N/A · Sim ÷ (Sim + Não))
+          </p>
+          {i.checklist_templates?.equipment && (
+            <p className={`mt-1 font-medium ${at.nao ? "text-amber-800" : "text-emerald-800"}`}>
+              {at.nao
+                ? `Equipamento só pode ser liberado depois de tratar ${at.nao} item(ns) com "Não" (ações abertas no plano de ação).`
+                : "Equipamento liberado: 100% de atendimento nos itens aplicáveis."}
+            </p>
+          )}
+        </div>
       )}
       <Erro mensagem={erro} />
       {ok && (
@@ -100,7 +135,9 @@ export async function InspecaoDetalhe({ id, base, erro, ok }: { id: string; base
             ? nAcoes
               ? `Inspeção concluída. ${nAcoes} não conformidade(s) viraram ações no plano de ação.`
               : "Inspeção concluída, sem não conformidades."
-            : "Respostas salvas."}
+            : ok === "assinada"
+              ? "Assinatura registrada."
+              : "Respostas salvas."}
         </p>
       )}
 
@@ -137,7 +174,7 @@ export async function InspecaoDetalhe({ id, base, erro, ok }: { id: string; base
                     name={`c_${r.id}`}
                     defaultValue={r.comment ?? ""}
                     className="input mt-2"
-                    placeholder="Comentário (o que foi visto, onde)"
+                    placeholder="Observação (obrigatória quando a resposta for Não)"
                   />
                   <label className="mt-2 block text-xs text-slate-600 print:hidden">
                     {r.photo_path ? "Trocar a foto" : "Foto (opcional)"}
@@ -170,15 +207,69 @@ export async function InspecaoDetalhe({ id, base, erro, ok }: { id: string; base
         )}
       </form>
 
+      {concluida && (
+        <section id="assinaturas" className="mt-8 scroll-mt-20">
+          <h2 className="font-semibold text-slate-900">Assinaturas</h2>
+          <p className="text-xs text-slate-500">
+            Cada assinatura guarda nome, documento, data e hora, IP, aparelho e um código de verificação (hash). Depois da
+            primeira assinatura, a inspeção não pode mais ser alterada.
+          </p>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            {assinaturas.map((a) => (
+              <div key={a.id} className="rounded-lg border border-slate-200 bg-white p-3 text-sm">
+                <p className="text-xs font-medium text-slate-500">{a.role}</p>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={a.image} alt={`Assinatura de ${a.signer_name}`} className="mt-1 h-20 rounded bg-[#fff]" />
+                <p className="mt-1 font-medium text-slate-900">{a.signer_name} · {a.signer_document}</p>
+                <p className="text-xs text-slate-500">
+                  {dataHora(a.signed_at)}{a.ip ? ` · IP ${a.ip}` : ""}
+                </p>
+                <p className="break-all font-mono text-[10px] text-slate-400" title={a.device ?? undefined}>hash {a.hash}</p>
+              </div>
+            ))}
+          </div>
+          {faltaAssinar.length > 0 && (
+            <form action={assinarInspecao} className="mt-3 grid gap-3 rounded-lg border border-slate-200 bg-white p-3 text-sm sm:grid-cols-2 print:hidden">
+              <input type="hidden" name="id" value={i.id} />
+              <input type="hidden" name="voltar" value={voltar} />
+              <label>
+                Assinar como
+                <select name="papel" className="input mt-1">
+                  {faltaAssinar.map((p) => <option key={p}>{p}</option>)}
+                </select>
+              </label>
+              <label>
+                Nome completo
+                <input name="nome" required className="input mt-1" />
+              </label>
+              <label>
+                Matrícula ou documento
+                <input name="documento" required className="input mt-1" />
+              </label>
+              <div className="sm:col-span-2">
+                <QuadroAssinatura />
+              </div>
+              <label className="flex items-start gap-2 sm:col-span-2">
+                <input type="checkbox" name="ciente" className="mt-1" />
+                <span>Declaro que conferi as respostas desta inspeção e que esta é a minha assinatura.</span>
+              </label>
+              <div className="sm:col-span-2">
+                <button className="btn">Assinar</button>
+              </div>
+            </form>
+          )}
+        </section>
+      )}
+
       <div className="mt-8 flex gap-6 print:hidden">
-        {concluida && equipe && (
+        {concluida && equipe && !assinada && (
           <form action={reabrirInspecao}>
             <input type="hidden" name="id" value={i.id} />
             <input type="hidden" name="voltar" value={voltar} />
             <button className="text-xs text-slate-600 hover:underline">Reabrir para corrigir</button>
           </form>
         )}
-        {editavel && (
+        {editavel && !assinada && (
           <form action={excluirInspecao}>
             <input type="hidden" name="id" value={i.id} />
             <input type="hidden" name="voltar" value={voltar} />

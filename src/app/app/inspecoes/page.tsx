@@ -14,6 +14,7 @@ type Linha = {
   inspected_on: string;
   inspector: string | null;
   status: string;
+  equipment_tag: string | null;
   checklist_templates: { name: string } | null;
   sectors: { name: string } | null;
   inspection_answers: { answer: string | null }[];
@@ -24,11 +25,11 @@ export default async function InspecoesPage({ searchParams }: Props) {
   const org = await requireOrg();
   const supabase = await createClient();
   const [{ data: modelos }, setores, { data: lista }] = await Promise.all([
-    supabase.from("checklist_templates").select("id, name").eq("organization_id", org.id).eq("active", true).order("name"),
+    supabase.from("checklist_templates").select("id, name, equipment").eq("organization_id", org.id).eq("active", true).order("name"),
     opcoesSetor(org.id),
     supabase
       .from("inspections")
-      .select("id, number, inspected_on, inspector, status, checklist_templates(name), sectors(name), inspection_answers(answer)")
+      .select("id, number, inspected_on, inspector, status, equipment_tag, checklist_templates(name), sectors(name), inspection_answers(answer)")
       .eq("organization_id", org.id)
       .order("inspected_on", { ascending: false })
       .limit(50),
@@ -40,15 +41,16 @@ export default async function InspecoesPage({ searchParams }: Props) {
       <h1 className="titulo">Inspeções e checklists</h1>
       <p className="mt-1 text-sm text-slate-600">
         Escolha um modelo, responda no local e conclua. Os trabalhadores também inspecionam pelo Meu EHS, com foto.
-        Cada “não conforme” vira uma ação num plano de ação da inspeção.
+        Cada “Não” (com observação obrigatória) vira uma ação num plano de ação da inspeção.
       </p>
       <div className="mt-3">
-        <Link href="/app/inspecoes/modelos" className="btn-ghost">Modelos de checklist</Link>
+        <Link href="/app/inspecoes/modelos" className="btn-ghost">Modelos de checklist</Link>{" "}
+        <Link href="/app/inspecoes/modelos#biblioteca" className="btn-ghost">Biblioteca com 30 checklists de equipamentos</Link>
       </div>
       <Erro mensagem={erro} />
 
       <div id="novo" className="mt-6 scroll-mt-20">
-        <NovaInspecao modelos={modelos ?? []} setores={setores} voltar="/app/inspecoes" />
+        <NovaInspecao modelos={modelos ?? []} setores={setores} voltar="/app/inspecoes" empresa={org.name} />
         {!modelos?.length && (
           <p className="mt-2 text-sm text-slate-500">
             Nenhum modelo ainda: crie em <Link href="/app/inspecoes/modelos" className="underline">Modelos de checklist</Link>.
@@ -63,7 +65,7 @@ export default async function InspecoesPage({ searchParams }: Props) {
           return (
             <li key={i.id} className="px-4 py-2">
               <Link href={`/app/inspecoes/${i.id}`} className="font-medium underline">
-                I-{String(i.number).padStart(4, "0")} · {dataBR(i.inspected_on)} · {i.checklist_templates?.name}
+                I-{String(i.number).padStart(4, "0")} · {dataBR(i.inspected_on)} · {i.checklist_templates?.name}{i.equipment_tag ? ` · ${i.equipment_tag}` : ""}
               </Link>
               {i.sectors ? ` · ${i.sectors.name}` : ""}
               {i.inspector ? ` · ${i.inspector}` : ""} ·{" "}
@@ -72,7 +74,7 @@ export default async function InspecoesPage({ searchParams }: Props) {
               ) : (
                 <span className="text-amber-700">em andamento ({respondidas}/{i.inspection_answers.length})</span>
               )}
-              {nc > 0 && <span className="text-red-700"> · {nc} não conforme(s)</span>}
+              {nc > 0 && <span className="text-red-700"> · {nc} “Não”</span>}
             </li>
           );
         })}

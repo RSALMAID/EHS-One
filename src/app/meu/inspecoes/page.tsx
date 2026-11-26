@@ -17,7 +17,7 @@ export default async function MinhasInspecoesPage({ searchParams }: Props) {
     data: { user },
   } = await supabase.auth.getUser();
   const [{ data: modelos }, setores, { data: lista }, { data: eu }] = await Promise.all([
-    supabase.from("checklist_templates").select("id, name").eq("organization_id", org.id).eq("active", true).order("name"),
+    supabase.from("checklist_templates").select("id, name, equipment").eq("organization_id", org.id).eq("active", true).order("name"),
     opcoesSetor(org.id),
     supabase
       .from("inspections")
@@ -41,7 +41,7 @@ export default async function MinhasInspecoesPage({ searchParams }: Props) {
     <div>
       <h1 className="text-xl font-bold">Inspeções</h1>
       <p className="mt-1 text-sm text-slate-600">
-        Escolha o checklist, responda no local e tire foto do que estiver errado. Cada “não conforme” vira uma ação
+        Escolha o checklist, responda no local e tire foto do que estiver errado. Cada “Não” (com observação) vira uma ação
         para a equipe de segurança.
       </p>
       <Erro mensagem={erro} />
@@ -49,7 +49,7 @@ export default async function MinhasInspecoesPage({ searchParams }: Props) {
         <details className="mt-4" open={!inspecoes.length}>
           <summary className="btn w-full">+ Nova inspeção</summary>
           <div className="mt-2">
-            <NovaInspecao modelos={modelos} setores={setores} voltar="/meu/inspecoes" inspetor={eu?.full_name} />
+            <NovaInspecao modelos={modelos} setores={setores} voltar="/meu/inspecoes" empresa={org.name} inspetor={eu?.full_name} />
           </div>
         </details>
       ) : (
@@ -71,7 +71,7 @@ export default async function MinhasInspecoesPage({ searchParams }: Props) {
                 </span>
                 <span className="block text-slate-500">
                   {i.status === "concluida" ? "Concluída" : `Em andamento (${feitas}/${i.inspection_answers.length})`}
-                  {nc ? ` · ${nc} não conforme(s)` : ""}
+                  {nc ? ` · ${nc} “Não”` : ""}
                 </span>
               </Link>
             </li>
