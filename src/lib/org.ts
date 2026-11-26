@@ -90,3 +90,8 @@ export function trialDaysLeft(trialEndsAt: string): number {
   const ms = new Date(trialEndsAt).getTime() - Date.now();
   return Math.max(0, Math.ceil(ms / 86_400_000));
 }
+
+/** Teste grátis terminou sem plano escolhido: só a tela de planos abre. */
+export function testeVencido(org: Pick<CurrentOrg, "plan" | "trialEndsAt">) {
+  return org.plan === "teste" && new Date(org.trialEndsAt).getTime() < Date.now();
+}

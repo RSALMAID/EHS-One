@@ -27,8 +27,8 @@ function Lista({ modulos, aoNavegar }: { modulos: string[]; aoNavegar?: () => vo
   return (
     <nav className="space-y-5 text-sm">
       {NAV.map((group) => {
-        const itens = group.items.filter((item) => !item.module || modulos.includes("*") || modulos.includes(item.module));
-        if (!itens.length) return null;
+        const livre = (m?: string) => !m || modulos.includes("*") || modulos.includes(m);
+        const itens = group.items;
         return (
           <div key={group.title}>
             <p className="flex items-center gap-2 px-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
@@ -37,7 +37,19 @@ function Lista({ modulos, aoNavegar }: { modulos: string[]; aoNavegar?: () => vo
             </p>
             <ul className="mt-1 space-y-0.5">
               {itens.map((item) =>
-                item.href ? (
+                item.href && !livre(item.module) ? (
+                  <li key={item.label}>
+                    <Link
+                      href={`/app/plano?modulo=${item.module}`}
+                      onClick={aoNavegar}
+                      className="flex items-center justify-between rounded-md px-2 py-1.5 text-slate-400 hover:bg-slate-50"
+                      title="Não incluído no seu plano"
+                    >
+                      {item.label}
+                      <span aria-label="não incluído no plano">🔒</span>
+                    </Link>
+                  </li>
+                ) : item.href ? (
                   <li key={item.label}>
                     <Link
                       href={item.href}

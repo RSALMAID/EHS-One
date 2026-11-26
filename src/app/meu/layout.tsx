@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AbasMeu } from "@/components/AbasMeu";
 import { sair } from "@/app/entrar/actions";
 import { liberado, modulosLiberados } from "@/lib/modulos";
-import { ehEquipe, requireOrg } from "@/lib/org";
+import { ehEquipe, requireOrg, testeVencido } from "@/lib/org";
 
 const ABAS = [
   { href: "/meu", label: "Início", icone: "inicio" },
@@ -37,7 +37,18 @@ export default async function MeuLayout({ children }: { children: React.ReactNod
         </div>
       </header>
       <main className="px-4 py-5">
-        {org.workerId ? (
+        {testeVencido(org) ? (
+          <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
+            O período de teste da empresa terminou. Assim que a empresa escolher um plano, o Meu EHS volta a funcionar e
+            tudo o que você registrou continua aqui.
+            {equipe && (
+              <>
+                {" "}
+                <Link href="/app/plano" className="font-medium underline">Escolher plano</Link>
+              </>
+            )}
+          </div>
+        ) : org.workerId ? (
           children
         ) : (
           <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">

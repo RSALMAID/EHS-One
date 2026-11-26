@@ -1,6 +1,6 @@
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import { cache } from "react";
-import { requireOrg } from "./org";
+import { ehEquipe, requireOrg } from "./org";
 import { createClient } from "./supabase/server";
 
 /** Códigos dos módulos liberados para a empresa ativa (pelo plano e liberações extras). */
@@ -19,9 +19,11 @@ export function liberado(modulos: string[], codigo?: string) {
   return !codigo || modulos.includes("*") || modulos.includes(codigo);
 }
 
-/** Use no layout de cada módulo: fora do plano, a página não abre. */
+/** Use no layout de cada módulo: fora do plano, mostra a tela de planos (ou o início do Meu EHS). */
 export async function requireModule(codigo: string) {
   const org = await requireOrg();
-  if (!liberado(await modulosLiberados(org.id), codigo)) notFound();
+  if (!liberado(await modulosLiberados(org.id), codigo)) {
+    redirect(ehEquipe(org.role) ? `/app/plano?modulo=${encodeURIComponent(codigo)}` : "/meu");
+  }
   return org;
 }
