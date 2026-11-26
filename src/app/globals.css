@@ -1,13 +1,22 @@
 @import "tailwindcss";
 
+/* Identidade do EHS One: verde de segurança sobre cinza neutro.
+   Cores de situação (ok, atenção, crítico) ficam reservadas para status, nunca para enfeite. */
 :root {
-  --background: #f8fafc;
+  --background: #f6f7f9;
   --foreground: #0f172a;
+  --marca: #047857;        /* emerald-700 */
+  --marca-escura: #065f46; /* emerald-800 */
+  --marca-clara: #ecfdf5;  /* emerald-50 */
+  --borda: #e2e8f0;        /* slate-200 */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-marca: var(--marca);
+  --color-marca-escura: var(--marca-escura);
+  --color-marca-clara: var(--marca-clara);
   --font-sans: var(--font-geist-sans);
 }
 
@@ -21,8 +30,18 @@ body {
   @apply w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20;
 }
 .btn {
-  @apply inline-flex items-center justify-center rounded-md bg-emerald-700 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-800 disabled:opacity-50;
+  @apply inline-flex items-center justify-center rounded-md bg-emerald-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-800 disabled:opacity-50;
 }
 .btn-ghost {
   @apply inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50;
+}
+/* Base para as próximas telas */
+.card {
+  @apply rounded-xl border border-slate-200 bg-white p-4 shadow-sm;
+}
+.titulo {
+  @apply text-2xl font-bold tracking-tight text-slate-900;
+}
+.subtitulo {
+  @apply mt-1 max-w-3xl text-sm text-slate-600;
 }
