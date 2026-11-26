@@ -6,6 +6,8 @@ import { dataBR, somarMeses } from "@/lib/datas";
 import { requireOrg } from "@/lib/org";
 import { createClient } from "@/lib/supabase/server";
 import { rotuloTreinamento } from "@/lib/treinamento";
+import { TIPOS_EVIDENCIA } from "@/lib/autorizacoes";
+import { adicionarEvidencia, removerEvidencia } from "../../../autorizacoes/actions";
 import { adicionarParticipantes, alternarAprovacao, removerParticipante, removerTurma } from "../../actions";
 
 type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ erro?: string }> };
@@ -31,7 +33,7 @@ export default async function TurmaPage({ params, searchParams }: Props) {
     .maybeSingle();
   if (!data) notFound();
   const turma = data as unknown as Turma;
-  const [{ data: part }, { data: trabalhadores }, { data: exigidos }] = await Promise.all([
+  const [{ data: part }, { data: trabalhadores }, { data: exigidos }, { data: evid }] = await Promise.all([
     supabase
       .from("training_attendances")
       .select("id, approved, worker_id, workers(full_name, cpf)")
@@ -43,7 +45,27 @@ export default async function TurmaPage({ params, searchParams }: Props) {
       .eq("active", true)
       .order("full_name"),
     supabase.from("training_job_roles").select("job_role_id").eq("training_id", turma.training_id),
+    supabase
+      .from("training_evidences")
+      .select("id, kind, file_path, file_name, notes, workers(full_name)")
+      .eq("session_id", id)
+      .order("created_at"),
   ]);
+  const evidencias = (evid ?? []) as unknown as {
+    id: string;
+    kind: string;
+    file_path: string;
+    file_name: string;
+    notes: string | null;
+    workers: { full_name: string } | null;
+  }[];
+  const links = new Map<string, string>();
+  if (evidencias.length) {
+    const { data: assinadas } = await supabase.storage
+      .from("capacitacoes")
+      .createSignedUrls(evidencias.map((e) => e.file_path), 3600);
+    for (const s of assinadas ?? []) if (s.path && s.signedUrl) links.set(s.path, s.signedUrl);
+  }
   const participantes = ((part ?? []) as unknown as Participante[]).sort((a, b) =>
     (a.workers?.full_name ?? "").localeCompare(b.workers?.full_name ?? ""),
   );
@@ -116,6 +138,67 @@ export default async function TurmaPage({ params, searchParams }: Props) {
       <div className="mt-10 hidden w-64 border-t border-slate-500 pt-1 text-center text-xs print:block">
         Instrutor: {turma.instructor ?? ""}
       </div>
+
+      <section className="mt-6 rounded-lg border border-slate-200 bg-white p-4 text-sm print:hidden">
+        <p className="font-semibold">Evidências da turma</p>
+        <p className="text-xs text-slate-500">
+          Guarde a lista de presença assinada, os certificados, o conteúdo e a avaliação. O certificado de uma pessoa
+          aparece para ela no Meu EHS.
+        </p>
+        <ul className="mt-2 divide-y divide-slate-100">
+          {evidencias.map((e) => (
+            <li key={e.id} className="flex flex-wrap items-center gap-2 py-2">
+              <span className="text-slate-500">{TIPOS_EVIDENCIA[e.kind]}</span>
+              {links.get(e.file_path) ? (
+                <a href={links.get(e.file_path)} target="_blank" rel="noreferrer" className="text-emerald-700 underline">
+                  📎 {e.file_name}
+                </a>
+              ) : (
+                <span>{e.file_name}</span>
+              )}
+              {e.workers && <span>· {e.workers.full_name}</span>}
+              {e.notes && <span className="text-slate-500">· {e.notes}</span>}
+              <form action={removerEvidencia} className="ml-auto">
+                <input type="hidden" name="id" value={e.id} />
+                <input type="hidden" name="turma" value={turma.id} />
+                <button className="text-xs text-red-600 hover:underline">remover</button>
+              </form>
+            </li>
+          ))}
+          {!evidencias.length && <li className="py-2 text-slate-500">Nenhuma evidência anexada.</li>}
+        </ul>
+        <form action={adicionarEvidencia} className="mt-3 grid gap-2 sm:grid-cols-4 sm:items-end">
+          <input type="hidden" name="turma" value={turma.id} />
+          <label>
+            Tipo
+            <select name="tipo" className="input mt-1" defaultValue="lista_presenca">
+              {Object.entries(TIPOS_EVIDENCIA).map(([k, l]) => (
+                <option key={k} value={k}>{l}</option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Pessoa (para certificado)
+            <select name="trabalhador" className="input mt-1" defaultValue="">
+              <option value="">—</option>
+              {participantes.map((p) => (
+                <option key={p.worker_id} value={p.worker_id}>{p.workers?.full_name}</option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Arquivo
+            <input name="arquivo" type="file" required accept="application/pdf,image/*" className="mt-1 block text-xs" />
+          </label>
+          <label>
+            Observação
+            <input name="obs" className="input mt-1" />
+          </label>
+          <div className="sm:col-span-4">
+            <button className="btn">Anexar</button>
+          </div>
+        </form>
+      </section>
 
       <form action={adicionarParticipantes} className="mt-6 rounded-lg border border-slate-200 bg-white p-4 print:hidden">
         <input type="hidden" name="turma" value={turma.id} />

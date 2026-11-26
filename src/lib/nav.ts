@@ -39,6 +39,7 @@ export const NAV: NavGroup[] = [
     items: [
       { label: "EPI", href: "/app/epi", phase: "MVP", module: "epi" },
       { label: "Treinamentos", href: "/app/treinamentos", phase: "MVP", module: "treinamentos" },
+      { label: "Autorizações", href: "/app/autorizacoes", phase: "MVP", module: "autorizacoes" },
       { label: "Saúde ocupacional", href: "/app/saude", phase: "MVP", module: "saude" },
       { label: "Inspeções e checklists", href: "/app/inspecoes", phase: "MVP", module: "inspecoes" },
       { label: "APR digital", href: "/app/apr", phase: "MVP", module: "apr_pt" },
