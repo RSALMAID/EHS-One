@@ -58,7 +58,7 @@ export const NAV: NavGroup[] = [
       { label: "Painel de indicadores", href: "/painel", phase: "MVP", module: "dashboard" },
       { label: "HHT", href: "/app/hht", phase: "MVP", module: "hht" },
       { label: "ISO 45001 e 14001", href: "/app/iso", phase: "MVP", module: "iso" },
-      { label: "Configurações", phase: "MVP" },
+      { label: "Plano e módulos", href: "/app/plano", phase: "MVP" },
     ],
   },
 ];

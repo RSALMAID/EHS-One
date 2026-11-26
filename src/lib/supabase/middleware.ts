@@ -2,9 +2,11 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { getSupabaseEnv, MISSING_ENV_MESSAGE } from "./env";
 
-const PROTECTED = ["/app", "/meu", "/painel", "/onboarding"];
+const PROTECTED = ["/app", "/meu", "/painel", "/onboarding", "/admin"];
 
 export async function updateSession(request: NextRequest) {
+  // Caminho atual, para os layouts saberem em que tela estão (bloqueio do teste vencido).
+  request.headers.set("x-caminho", request.nextUrl.pathname);
   let response = NextResponse.next({ request });
   const path = request.nextUrl.pathname;
   const needsLogin = PROTECTED.some((p) => path === p || path.startsWith(`${p}/`));
