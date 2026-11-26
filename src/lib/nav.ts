@@ -31,7 +31,7 @@ export const NAV: NavGroup[] = [
       { label: "Higiene ocupacional", href: "/app/higiene", phase: "MVP", module: "higiene" },
       { label: "Meio ambiente", href: "/app/ambiente", phase: "MVP", module: "meio_ambiente" },
       { label: "Ergonomia", phase: "V2", module: "higiene" },
-      { label: "Requisitos legais", phase: "V2", module: "requisitos_legais" },
+      { label: "Requisitos legais", href: "/app/requisitos", phase: "MVP", module: "requisitos_legais" },
     ],
   },
   {
