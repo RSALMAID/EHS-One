@@ -11,6 +11,7 @@ export const ORIGENS: Record<string, string> = {
   documento: "Documento",
   observacao: "Observação",
   requisito_legal: "Requisito legal",
+  cipa: "CIPA",
   vencimento: "Vencimento",
   outro: "Outro",
 };
