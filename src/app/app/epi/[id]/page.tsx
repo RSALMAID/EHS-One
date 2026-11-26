@@ -54,7 +54,7 @@ export default async function EpiItemPage({ params, searchParams }: Props) {
       </p>
       <Erro mensagem={erro} />
 
-      <form action={salvarItem} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-3">
+      <form action={salvarItem} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-3">
         <input type="hidden" name="id" value={item.id} />
         <label className="text-sm sm:col-span-2">
           EPI
@@ -85,7 +85,7 @@ export default async function EpiItemPage({ params, searchParams }: Props) {
       </form>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <form action={movimentarEstoque} className="rounded-lg border border-slate-200 bg-white p-4">
+        <form action={movimentarEstoque} className="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
           <input type="hidden" name="id" value={item.id} />
           <p className="font-semibold">Estoque: {item.stock}</p>
           <p className="text-sm text-slate-600">Compra: número positivo. Acerto para menos: número negativo.</p>
@@ -95,7 +95,7 @@ export default async function EpiItemPage({ params, searchParams }: Props) {
           </div>
         </form>
 
-        <form action={salvarCargosObrigatorios} className="rounded-lg border border-slate-200 bg-white p-4">
+        <form action={salvarCargosObrigatorios} className="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
           <input type="hidden" name="id" value={item.id} />
           <p className="font-semibold">Obrigatório para os cargos</p>
           <div className="mt-2 grid gap-1">
@@ -115,7 +115,7 @@ export default async function EpiItemPage({ params, searchParams }: Props) {
       </div>
 
       <h2 className="mt-8 text-lg font-semibold">Entregas deste EPI</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {linhas.map((e) => (
           <li key={e.id} className="px-4 py-2">
             {dataBR(e.delivered_on)} ·{" "}

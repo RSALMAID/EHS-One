@@ -30,7 +30,7 @@ export default async function MinhasAcoes({ searchParams }: Props) {
         {abertas.map((a) => {
           const s = prazo(a.due_date, a.status);
           return (
-            <form key={a.id} action={enviarAcao} className="rounded-lg border border-slate-200 bg-white p-4 text-sm">
+            <form key={a.id} action={enviarAcao} className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
               <input type="hidden" name="id" value={a.id} />
               <p className="text-xs text-slate-500">
                 {numero(a.number)} · <span className={`inline-block h-2 w-2 rounded-full ${s.cor}`} /> {s.texto}
@@ -49,7 +49,7 @@ export default async function MinhasAcoes({ searchParams }: Props) {
           );
         })}
         {!abertas.length && (
-          <p className="rounded-lg border border-slate-200 bg-white p-4 text-center text-sm text-slate-500">
+          <p className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-center text-sm text-slate-500">
             Nenhuma ação pendente com você.
           </p>
         )}
@@ -58,7 +58,7 @@ export default async function MinhasAcoes({ searchParams }: Props) {
       {outras.length > 0 && (
         <>
           <h2 className="mt-6 font-semibold">Enviadas e encerradas</h2>
-          <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+          <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
             {outras.map((a) => (
               <li key={a.id} className="px-4 py-3">
                 <p className="font-medium">{a.action}</p>

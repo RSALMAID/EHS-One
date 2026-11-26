@@ -121,7 +121,7 @@ export default async function EventoPage({ params, searchParams }: Props) {
       </p>
       <Erro mensagem={erro} />
 
-      <form action={salvarEvento} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+      <form action={salvarEvento} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
         <input type="hidden" name="id" value={e.id} />
         <p className="font-semibold sm:col-span-2">Registro e classificação</p>
         <label>
@@ -254,7 +254,7 @@ export default async function EventoPage({ params, searchParams }: Props) {
         </div>
       </form>
 
-      <section className="mt-6 rounded-lg border border-slate-200 bg-white p-4 text-sm">
+      <section className="mt-6 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
         <p className="font-semibold">Fotos</p>
         <div className="mt-2 flex flex-wrap gap-2">
           {(urls ?? []).map((u, i) =>
@@ -274,7 +274,7 @@ export default async function EventoPage({ params, searchParams }: Props) {
         </form>
       </section>
 
-      <section className="mt-6 rounded-lg border border-slate-200 bg-white p-4 text-sm">
+      <section className="mt-6 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
         <p className="font-semibold">Investigação e análise de causas</p>
         <form action={salvarInvestigacao} className="mt-2 grid gap-3 sm:grid-cols-2">
           <input type="hidden" name="id" value={e.id} />
@@ -367,7 +367,7 @@ export default async function EventoPage({ params, searchParams }: Props) {
         </form>
       </section>
 
-      <section className="mt-6 rounded-lg border border-slate-200 bg-white p-4 text-sm">
+      <section className="mt-6 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
         <p className="font-semibold">Ações para as causas</p>
         <p className="text-xs text-slate-500">As ações entram no plano deste evento, na Gestão › Plano de ação.</p>
         <form action={criarAcaoEvento} className="mt-2 grid gap-2 sm:grid-cols-2">

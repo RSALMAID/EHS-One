@@ -41,31 +41,31 @@ export default async function EpiPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">EPI</h1>
+      <h1 className="titulo">EPI</h1>
       <p className="mt-1 text-sm text-slate-600">
         Cadastre os EPIs com CA, diga quais cargos precisam de cada um e registre as entregas com assinatura.
       </p>
       <Erro mensagem={erro} />
 
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
-        <Link href="/app/epi/entregas" className="rounded-lg border border-slate-200 bg-white p-4 hover:border-emerald-600">
+        <Link href="/app/epi/entregas" className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 hover:border-emerald-600">
           <p className="font-semibold">Registrar entrega</p>
           <p className="text-sm text-slate-600">Ficha de EPI com assinatura do trabalhador</p>
         </Link>
-        <Link href="/app/epi/pendencias" className="rounded-lg border border-slate-200 bg-white p-4 hover:border-emerald-600">
+        <Link href="/app/epi/pendencias" className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 hover:border-emerald-600">
           <p className="font-semibold">Pendências</p>
           <p className={`text-sm ${pendencias.length ? "text-amber-700" : "text-slate-600"}`}>
             {pendencias.filter((p) => p.tipo === "falta").length} sem EPI obrigatório ·{" "}
             {pendencias.filter((p) => p.tipo === "troca").length} trocas a fazer
           </p>
         </Link>
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
+        <div className="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
           <p className="font-semibold">CA vencido</p>
           <p className={`text-sm ${caVencidos ? "text-red-700" : "text-slate-600"}`}>{caVencidos} EPI(s) em uso</p>
         </div>
       </div>
 
-      <form action={adicionarItem} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-3">
+      <form action={adicionarItem} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-3">
         <label className="text-sm sm:col-span-2">
           EPI
           <input name="nome" required className="input mt-1" placeholder="Luva de vaqueta" />
@@ -95,7 +95,7 @@ export default async function EpiPage({ searchParams }: Props) {
         </div>
       </form>
 
-      <ul className="mt-6 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white">
+      <ul className="mt-6 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm">
         {lista.map((i) => {
           const ca = situacaoCA(i.ca_valid_until);
           return (

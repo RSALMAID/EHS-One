@@ -100,7 +100,7 @@ export async function AprDetalhe({ id, base, erro }: { id: string; base: "/app" 
         <h2 className="font-semibold">Etapas, perigos e controles</h2>
         <ol className="mt-2 space-y-2">
           {lista.map((e, i) => (
-            <li key={e.id} className="rounded-lg border border-slate-200 bg-white p-3 text-sm">
+            <li key={e.id} className="rounded-xl border border-slate-200 bg-white shadow-sm p-3 text-sm">
               <div className="flex items-start justify-between gap-2">
                 <p className="font-medium">
                   {i + 1}. {e.step}
@@ -126,7 +126,7 @@ export async function AprDetalhe({ id, base, erro }: { id: string; base: "/app" 
         </ol>
 
         {editavel && (
-          <details className="mt-3 rounded-lg border border-slate-200 bg-white p-3 print:hidden" open={!lista.length}>
+          <details className="mt-3 rounded-xl border border-slate-200 bg-white shadow-sm p-3 print:hidden" open={!lista.length}>
             <summary className="cursor-pointer text-sm font-medium text-emerald-800">+ Adicionar etapa</summary>
             <form action={adicionarEtapa} className="mt-3 grid gap-3 text-sm">
               <input type="hidden" name="apr" value={apr.id} />

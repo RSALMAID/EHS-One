@@ -34,7 +34,7 @@ export default async function CipaPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">CIPA</h1>
+      <h1 className="titulo">CIPA</h1>
       <p className="mt-1 text-sm text-slate-600">
         Comissão Interna de Prevenção de Acidentes e de Assédio (NR-05). Cadastre cada gestão com seus membros, registre as
         reuniões com presença e ata, e transforme as deliberações em ações. O SESMT fica em{" "}
@@ -42,7 +42,7 @@ export default async function CipaPage({ searchParams }: Props) {
       </p>
       <Erro mensagem={erro} />
 
-      <ul className="mt-4 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-4 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {gestoes.map((g) => {
           const vigente = g.starts_on <= h && h <= g.ends_on;
           return (
@@ -61,7 +61,7 @@ export default async function CipaPage({ searchParams }: Props) {
 
       <details className="mt-6" open={!gestoes.length}>
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">+ Nova gestão</summary>
-        <form action={criarGestao} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+        <form action={criarGestao} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
           <label>
             Nome
             <input name="nome" required className="input mt-1" placeholder="Ex.: Gestão 2026/2027" />

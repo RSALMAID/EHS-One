@@ -40,7 +40,7 @@ export default async function PtsPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Permissão de trabalho</h1>
+      <h1 className="titulo">Permissão de trabalho</h1>
       <p className="mt-1 text-sm text-slate-600">
         PT para serviços de alto risco (altura, espaço confinado, a quente, eletricidade, escavação, içamento). O
         checklist sai pronto conforme o tipo; a equipe libera depois que todos assinam.
@@ -59,7 +59,7 @@ export default async function PtsPage({ searchParams }: Props) {
           <Link key={s} href={`/app/pt?status=${s}`} className={chip(s === status)}>{l}</Link>
         ))}
       </div>
-      <ul className="mt-3 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-3 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {pts.map((p) => {
           const vencida = p.status === "liberada" && new Date(p.valid_until) < agora;
           return (

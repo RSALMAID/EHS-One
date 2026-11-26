@@ -40,7 +40,7 @@ export default async function MeusTreinamentos() {
       <h1 className="text-xl font-bold">Meus treinamentos</h1>
 
       <h2 className="mt-4 font-semibold">Exigidos para o meu cargo</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {obrigatorios.map(({ t, s }) => (
           <li key={t.id} className="px-4 py-3">
             <p className="font-medium">{rotuloTreinamento(t)}</p>
@@ -61,7 +61,7 @@ export default async function MeusTreinamentos() {
       {autorizacoes.length > 0 && (
         <>
           <h2 className="mt-6 font-semibold">Minhas autorizações</h2>
-          <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+          <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
             {autorizacoes.map((a) => {
               const s = situacaoAutorizacao(a);
               return (
@@ -89,7 +89,7 @@ export default async function MeusTreinamentos() {
       {certificados.length > 0 && (
         <>
           <h2 className="mt-6 font-semibold">Meus certificados</h2>
-          <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+          <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
             {certificados.map((c) => (
               <li key={c.id} className="px-4 py-3">
                 <p className="font-medium">{c.training_sessions?.trainings?.name ?? "Treinamento"}</p>
@@ -108,7 +108,7 @@ export default async function MeusTreinamentos() {
       )}
 
       <h2 className="mt-6 font-semibold">Histórico</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {historico.map((h, i) => (
           <li key={i} className="px-4 py-3">
             <p className="font-medium">{h.nome}</p>

@@ -62,7 +62,7 @@ export default async function MatrizPage({ searchParams }: Props) {
       <Erro mensagem={erro} />
 
       {colunas.length === 0 ? (
-        <p className="mt-6 rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600">
+        <p className="mt-6 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm text-slate-600">
           Nenhum treinamento tem cargos marcados ainda. Abra um treinamento e marque os cargos que precisam dele.
         </p>
       ) : (
@@ -101,7 +101,7 @@ export default async function MatrizPage({ searchParams }: Props) {
       )}
 
       <h2 className="mt-8 text-lg font-semibold">Pendências ({problemas.length})</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {problemas.map(({ w, t, s }) => {
           const texto =
             s.tipo === "nunca"

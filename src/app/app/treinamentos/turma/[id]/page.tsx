@@ -139,7 +139,7 @@ export default async function TurmaPage({ params, searchParams }: Props) {
         Instrutor: {turma.instructor ?? ""}
       </div>
 
-      <section className="mt-6 rounded-lg border border-slate-200 bg-white p-4 text-sm print:hidden">
+      <section className="mt-6 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm print:hidden">
         <p className="font-semibold">Evidências da turma</p>
         <p className="text-xs text-slate-500">
           Guarde a lista de presença assinada, os certificados, o conteúdo e a avaliação. O certificado de uma pessoa
@@ -200,7 +200,7 @@ export default async function TurmaPage({ params, searchParams }: Props) {
         </form>
       </section>
 
-      <form action={adicionarParticipantes} className="mt-6 rounded-lg border border-slate-200 bg-white p-4 print:hidden">
+      <form action={adicionarParticipantes} className="mt-6 rounded-xl border border-slate-200 bg-white shadow-sm p-4 print:hidden">
         <input type="hidden" name="turma" value={turma.id} />
         <p className="font-semibold">Adicionar participantes</p>
         <p className="text-xs text-slate-500">Quem tem cargo que exige este treinamento aparece primeiro.</p>

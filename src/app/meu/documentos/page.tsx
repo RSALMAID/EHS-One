@@ -25,7 +25,7 @@ export default async function MeusDocumentosPage() {
     <div>
       <h1 className="text-xl font-bold">Documentos</h1>
       <p className="mt-1 text-sm text-slate-600">Procedimentos e programas de segurança da empresa.</p>
-      <ul className="mt-4 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-4 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {docs.map((d) => {
           const url = d.file_path ? links.get(d.file_path) : null;
           return (

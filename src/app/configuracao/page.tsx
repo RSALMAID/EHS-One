@@ -7,7 +7,7 @@ export default function ConfiguracaoPage() {
   const check = checkSupabaseEnv();
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col justify-center px-4">
-      <h1 className="text-2xl font-bold">
+      <h1 className="titulo">
         {check.ok ? "Supabase configurado" : "A configuração do Supabase tem um problema"}
       </h1>
       {check.ok ? (

@@ -39,7 +39,7 @@ export default async function DocumentoPage({ params, searchParams }: Props) {
       <Erro mensagem={erro} />
       {ok && <p className="mt-3 rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-800">Alterações salvas.</p>}
 
-      <form action={salvarDocumento} className="mt-4 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+      <form action={salvarDocumento} className="mt-4 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
         <input type="hidden" name="id" value={doc.id} />
         <CamposDocumento doc={doc} setores={setores} />
         <div className="sm:col-span-2">

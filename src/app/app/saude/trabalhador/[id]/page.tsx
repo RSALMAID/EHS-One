@@ -55,7 +55,7 @@ export default async function ProntuarioPage({ params, searchParams }: Props) {
       </div>
 
       <h2 className="mt-6 text-lg font-semibold">ASOs</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {(asos ?? []).map((a) => (
           <li key={a.id} className="flex items-start justify-between gap-3 px-4 py-2">
             <span>
@@ -81,7 +81,7 @@ export default async function ProntuarioPage({ params, searchParams }: Props) {
       {exames && (
         <>
           <h2 className="mt-8 text-lg font-semibold">Exames exigidos pelo cargo</h2>
-          <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+          <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
             {exigidos.map((e) => {
               const s = situacaoExame(e, lista as ExameFeito[], id);
               return (
@@ -100,7 +100,7 @@ export default async function ProntuarioPage({ params, searchParams }: Props) {
             {!exigidos.length && <li className="px-4 py-4 text-center text-slate-500">O cargo não tem exames exigidos.</li>}
           </ul>
 
-          <form action={registrarExame} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-[1fr_10rem_2fr_auto] sm:items-end">
+          <form action={registrarExame} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-[1fr_10rem_2fr_auto] sm:items-end">
             <input type="hidden" name="trabalhador" value={id} />
             <label className="text-sm">
               Exame realizado
@@ -123,7 +123,7 @@ export default async function ProntuarioPage({ params, searchParams }: Props) {
           </form>
 
           <h2 className="mt-6 text-lg font-semibold">Histórico de exames</h2>
-          <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+          <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
             {lista.map((x) => (
               <li key={x.id} className="flex items-start justify-between gap-3 px-4 py-2">
                 <span>

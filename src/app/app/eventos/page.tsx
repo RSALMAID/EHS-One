@@ -43,7 +43,7 @@ export default async function EventosPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Eventos e desvios</h1>
+      <h1 className="titulo">Eventos e desvios</h1>
       <p className="mt-1 text-sm text-slate-600">
         Acidentes, incidentes, quase acidentes, eventos ambientais e desvios. Os trabalhadores relatam pelo Meu EHS; aqui
         a equipe classifica, investiga e abre as ações.
@@ -60,7 +60,7 @@ export default async function EventosPage({ searchParams }: Props) {
         ))}
       </div>
 
-      <ul className="mt-4 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-4 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {eventos.map((e) => (
           <li key={e.id} className="px-4 py-3">
             <div className="flex flex-wrap items-baseline justify-between gap-2">

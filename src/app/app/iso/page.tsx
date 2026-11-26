@@ -43,7 +43,7 @@ export default async function IsoPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">ISO 45001 e ISO 14001</h1>
+      <h1 className="titulo">ISO 45001 e ISO 14001</h1>
       <p className="mt-1 text-sm text-slate-600">
         Os módulos do sistema já cobrem a maior parte do que as duas normas pedem. Aqui ficam o que é próprio do sistema de
         gestão: objetivos e metas, auditorias e análise crítica pela direção. O quadro abaixo mostra onde cada requisito é
@@ -52,7 +52,7 @@ export default async function IsoPage() {
 
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
         {cartoes.map((c) => (
-          <Link key={c.href} href={c.href} className="rounded-lg border border-slate-200 bg-white p-4 text-sm hover:border-emerald-600">
+          <Link key={c.href} href={c.href} className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm hover:border-emerald-600">
             <p className="font-semibold text-emerald-800">{c.titulo}</p>
             <p className="mt-1 text-slate-600">{c.texto}</p>
           </Link>

@@ -39,7 +39,7 @@ export default async function PlanosPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Plano de ação</h1>
+      <h1 className="titulo">Plano de ação</h1>
       <p className="mt-1 text-sm text-slate-600">
         Cada plano reúne as ações de um assunto. As ações criadas no PGR, EPI, treinamentos, saúde e inspeções entram
         sozinhas no plano da sua origem.
@@ -52,7 +52,7 @@ export default async function PlanosPage({ searchParams }: Props) {
       </div>
       <Erro mensagem={erro} />
 
-      <form action={criarPlano} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-2">
+      <form action={criarPlano} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-2">
         <p className="font-semibold sm:col-span-2">Novo plano</p>
         <label className="text-sm">
           Título
@@ -95,7 +95,7 @@ export default async function PlanosPage({ searchParams }: Props) {
           const atrasadas = p.actions.filter((a) => !encerrada(a.status) && a.due_date && a.due_date < h).length;
           const pct = total ? Math.round((feitas / total) * 100) : 0;
           return (
-            <li key={p.id} className="rounded-lg border border-slate-200 bg-white p-4 text-sm">
+            <li key={p.id} className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <Link href={`/app/acoes/plano/${p.id}`} className="font-medium text-emerald-800 underline">
                   Plano {numero(p.number)} · {p.title}

@@ -43,7 +43,7 @@ export default async function TreinamentoPage({ params, searchParams }: Props) {
       <h1 className="mt-3 text-2xl font-bold">{rotuloTreinamento(t)}</h1>
       <Erro mensagem={erro} />
 
-      <form action={salvarTreinamento} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-4">
+      <form action={salvarTreinamento} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-4">
         <input type="hidden" name="id" value={t.id} />
         <label className="text-sm sm:col-span-2">
           Treinamento
@@ -74,7 +74,7 @@ export default async function TreinamentoPage({ params, searchParams }: Props) {
       </form>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <form action={salvarCargosExigidos} className="rounded-lg border border-slate-200 bg-white p-4">
+        <form action={salvarCargosExigidos} className="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
           <input type="hidden" name="id" value={t.id} />
           <p className="font-semibold">Exigido para os cargos</p>
           <div className="mt-2 grid gap-1">
@@ -92,7 +92,7 @@ export default async function TreinamentoPage({ params, searchParams }: Props) {
           <button className="btn mt-3">Salvar cargos</button>
         </form>
 
-        <form action={criarTurma} className="grid gap-2 rounded-lg border border-slate-200 bg-white p-4">
+        <form action={criarTurma} className="grid gap-2 rounded-xl border border-slate-200 bg-white shadow-sm p-4">
           <input type="hidden" name="treinamento" value={t.id} />
           <p className="font-semibold">Nova turma</p>
           <label className="text-sm">
@@ -114,7 +114,7 @@ export default async function TreinamentoPage({ params, searchParams }: Props) {
       </div>
 
       <h2 className="mt-8 text-lg font-semibold">Turmas</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {lista.map((s) => (
           <li key={s.id} className="px-4 py-2">
             <Link href={`/app/treinamentos/turma/${s.id}`} className="underline">{dataBR(s.held_on)}</Link>

@@ -50,7 +50,7 @@ export default async function EntregasPage({ searchParams }: Props) {
       <Erro mensagem={erro} />
       {ok && <p className="mt-3 rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-800">Entrega registrada.</p>}
 
-      <form action={registrarEntrega} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-2">
+      <form action={registrarEntrega} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-2">
         <label className="text-sm">
           Trabalhador
           <select name="trabalhador" required defaultValue={trabalhador ?? ""} className="input mt-1">
@@ -111,7 +111,7 @@ export default async function EntregasPage({ searchParams }: Props) {
       </form>
 
       <h2 className="mt-8 text-lg font-semibold">Últimas entregas</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {linhas.map((e) => (
           <li key={e.id} className="flex items-start justify-between gap-3 px-4 py-2">
             <span>

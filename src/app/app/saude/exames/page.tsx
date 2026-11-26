@@ -27,7 +27,7 @@ export default async function ExamesPage({ searchParams }: Props) {
       <Erro mensagem={erro} />
 
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
-        <section className="rounded-lg border border-slate-200 bg-white p-4">
+        <section className="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
           <p className="font-semibold">Exames</p>
           <form action={adicionarTipoExame} className="mt-2 flex gap-2">
             <input name="nome" required className="input" placeholder="Audiometria" />
@@ -47,7 +47,7 @@ export default async function ExamesPage({ searchParams }: Props) {
           </ul>
         </section>
 
-        <section className="rounded-lg border border-slate-200 bg-white p-4">
+        <section className="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
           <p className="font-semibold">Exigir exame para um cargo</p>
           <form action={exigirExame} className="mt-2 grid gap-2 sm:grid-cols-[1fr_1fr_6rem_auto] sm:items-end">
             <label className="text-sm">

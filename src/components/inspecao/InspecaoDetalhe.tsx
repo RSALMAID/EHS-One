@@ -109,7 +109,7 @@ export async function InspecaoDetalhe({ id, base, erro, ok }: { id: string; base
         <input type="hidden" name="voltar" value={voltar} />
         <ol className="space-y-3">
           {respostas.map((r, n) => (
-            <li key={r.id} className="rounded-lg border border-slate-200 bg-white p-3 text-sm">
+            <li key={r.id} className="rounded-xl border border-slate-200 bg-white shadow-sm p-3 text-sm">
               <p className="font-medium">{n + 1}. {r.question}</p>
               {!editavel ? (
                 <p className="mt-1">

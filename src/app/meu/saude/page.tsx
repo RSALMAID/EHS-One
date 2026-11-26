@@ -8,7 +8,7 @@ export default async function MinhaSaude() {
   return (
     <div>
       <h1 className="text-xl font-bold">Meus ASOs</h1>
-      <ul className="mt-4 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-4 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {asos.map((a) => (
           <li key={a.id} className="px-4 py-3">
             <p className="font-medium">

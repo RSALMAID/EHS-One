@@ -29,7 +29,7 @@ export default async function AuditoriasPage({ searchParams }: Props) {
       </p>
       <Erro mensagem={erro} />
 
-      <ul className="mt-4 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-4 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {(data ?? []).map((a) => {
           const achados = (a.audit_findings as { kind: string }[]) ?? [];
           const ncs = achados.filter((f) => f.kind === "nc_maior" || f.kind === "nc_menor").length;
@@ -54,7 +54,7 @@ export default async function AuditoriasPage({ searchParams }: Props) {
 
       <details className="mt-6" open={!data?.length}>
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">+ Nova auditoria</summary>
-        <form action={criarAuditoria} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+        <form action={criarAuditoria} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
           <label>
             Tipo
             <select name="tipo" className="input mt-1" defaultValue="interna">

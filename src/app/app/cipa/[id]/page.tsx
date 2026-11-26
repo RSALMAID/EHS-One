@@ -125,7 +125,7 @@ export default async function GestaoPage({ params, searchParams }: Props) {
         desde o registro da candidatura até 1 ano após o fim do mandato.
       </p>
 
-      <form action={adicionarMembro} className="mt-3 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-4 sm:items-end">
+      <form action={adicionarMembro} className="mt-3 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-4 sm:items-end">
         <input type="hidden" name="gestao" value={id} />
         <label>
           Pessoa
@@ -163,7 +163,7 @@ export default async function GestaoPage({ params, searchParams }: Props) {
       </form>
 
       <h2 className="mt-8 font-semibold">Reuniões</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {(reunioes ?? []).map((r) => (
           <li key={r.id} className="px-4 py-3">
             <Link href={`/app/cipa/${id}/reuniao/${r.id}`} className="font-medium text-emerald-800 underline">
@@ -176,7 +176,7 @@ export default async function GestaoPage({ params, searchParams }: Props) {
         ))}
         {!reunioes?.length && <li className="px-4 py-6 text-center text-slate-500">Nenhuma reunião registrada.</li>}
       </ul>
-      <form action={criarReuniao} className="mt-3 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-4 sm:items-end">
+      <form action={criarReuniao} className="mt-3 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-4 sm:items-end">
         <input type="hidden" name="gestao" value={id} />
         <label>
           Data
@@ -202,7 +202,7 @@ export default async function GestaoPage({ params, searchParams }: Props) {
 
       <details className="mt-8">
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">Editar gestão</summary>
-        <form action={salvarGestao} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+        <form action={salvarGestao} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
           <input type="hidden" name="id" value={id} />
           <label>
             Nome

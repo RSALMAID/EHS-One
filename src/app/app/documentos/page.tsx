@@ -36,7 +36,7 @@ export default async function DocumentosPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Documentos</h1>
+      <h1 className="titulo">Documentos</h1>
       <p className="mt-1 text-sm text-slate-600">
         Programas, laudos, procedimentos, licenças e certificados num lugar só, com versão e validade. Os vencidos e os
         que vencem em 30 dias aparecem primeiro.
@@ -49,7 +49,7 @@ export default async function DocumentosPage({ searchParams }: Props) {
         </p>
       )}
 
-      <ul className="mt-4 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-4 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {docs.map((d) => {
           const s = situacaoValidade(d.valid_until);
           return (
@@ -76,7 +76,7 @@ export default async function DocumentosPage({ searchParams }: Props) {
 
       <details className="mt-6" open={!docs.length}>
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">+ Novo documento</summary>
-        <form action={criarDocumento} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+        <form action={criarDocumento} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
           <CamposDocumento setores={setores} />
           <div className="sm:col-span-2">
             <button className="btn">Salvar documento</button>

@@ -42,7 +42,7 @@ export default async function AprsPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">APR digital</h1>
+      <h1 className="titulo">APR digital</h1>
       <p className="mt-1 text-sm text-slate-600">
         Análise Preliminar de Risco: as etapas da tarefa, os perigos de cada uma e como controlar. Os trabalhadores
         também criam APR pelo Meu EHS; a equipe aprova ou devolve, e cada participante assina no celular.
@@ -61,7 +61,7 @@ export default async function AprsPage({ searchParams }: Props) {
           <Link key={s} href={`/app/apr?status=${s}`} className={chip(s === status)}>{l}</Link>
         ))}
       </div>
-      <ul className="mt-3 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-3 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {aprs.map((a) => {
           const maior = Math.max(0, ...a.apr_steps.map((e) => e.level));
           return (

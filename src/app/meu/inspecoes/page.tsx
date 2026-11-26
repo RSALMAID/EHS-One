@@ -59,7 +59,7 @@ export default async function MinhasInspecoesPage({ searchParams }: Props) {
       )}
 
       <h2 className="mt-6 font-semibold">Minhas inspeções</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {inspecoes.map((i) => {
           const nc = i.inspection_answers.filter((a) => a.answer === "nao_conforme").length;
           const feitas = i.inspection_answers.filter((a) => a.answer).length;

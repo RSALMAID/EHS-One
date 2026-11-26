@@ -69,7 +69,7 @@ export default async function RequisitoPage({ params, searchParams }: Props) {
       {r.applicable && (
         <>
           <h2 className="mt-6 font-semibold">Nova avaliação de atendimento</h2>
-          <form action={avaliarRequisito} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-3">
+          <form action={avaliarRequisito} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-3">
             <input type="hidden" name="id" value={id} />
             <label>
               Data
@@ -115,7 +115,7 @@ export default async function RequisitoPage({ params, searchParams }: Props) {
       )}
 
       <h2 className="mt-8 font-semibold">Histórico de avaliações</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {avaliacoes.map((a) => (
           <li key={a.id} className="px-4 py-3">
             <div className="flex flex-wrap items-center gap-2">
@@ -141,7 +141,7 @@ export default async function RequisitoPage({ params, searchParams }: Props) {
 
       <details className="mt-8">
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">Editar requisito</summary>
-        <form action={salvarRequisito} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+        <form action={salvarRequisito} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
           <input type="hidden" name="id" value={id} />
           <CamposRequisito
             v={r}

@@ -36,7 +36,7 @@ export default async function MinhasTarefasPage({ searchParams }: Props) {
       )}
 
       <h2 className="mt-5 font-semibold">Minhas APRs</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {(aprs ?? []).map((a) => (
           <li key={a.id}>
             <Link href={`/meu/apr/${a.id}`} className="block px-4 py-3 active:bg-slate-50">
@@ -49,7 +49,7 @@ export default async function MinhasTarefasPage({ searchParams }: Props) {
       </ul>
 
       <h2 className="mt-5 font-semibold">Minhas PTs</h2>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {(pts ?? []).map((p) => (
           <li key={p.id}>
             <Link href={`/meu/pt/${p.id}`} className="block px-4 py-3 active:bg-slate-50">

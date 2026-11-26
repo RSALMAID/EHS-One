@@ -80,7 +80,7 @@ export default async function AutorizacoesPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Autorizações</h1>
+      <h1 className="titulo">Autorizações</h1>
       <p className="mt-1 text-sm text-slate-600">
         Quem está autorizado a fazer cada serviço de risco (NR-10, NR-33, NR-35, operadores…), até quando, por quem, e o
         documento assinado. Ligue a autorização ao treinamento exigido para ver se a capacitação está em dia. As evidências
@@ -107,7 +107,7 @@ export default async function AutorizacoesPage({ searchParams }: Props) {
         ))}
       </div>
 
-      <ul className="mt-3 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-3 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {lista.map((a) => {
           const s = situacaoAutorizacao(a);
           const t = a.training_id ? porId.get(a.training_id) : undefined;
@@ -182,7 +182,7 @@ export default async function AutorizacoesPage({ searchParams }: Props) {
 
       <details className="mt-6" open={!todas.length}>
         <summary className="cursor-pointer text-sm font-medium text-emerald-800">+ Nova autorização</summary>
-        <form action={criarAutorizacao} className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm sm:grid-cols-2">
+        <form action={criarAutorizacao} className="mt-2 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 text-sm sm:grid-cols-2">
           <label>
             Pessoa
             <select name="trabalhador" required className="input mt-1" defaultValue="">

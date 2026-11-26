@@ -19,7 +19,7 @@ export default async function SetoresPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Setores</h1>
+      <h1 className="titulo">Setores</h1>
       <p className="mt-1 text-sm text-slate-600">Áreas dentro de cada unidade: Produção, Manutenção, Administrativo…</p>
       <Erro mensagem={erro} />
 
@@ -29,7 +29,7 @@ export default async function SetoresPage({ searchParams }: Props) {
         </p>
       ) : (
         <>
-          <form action={adicionarSetor} className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-[1fr_2fr_auto] sm:items-end">
+          <form action={adicionarSetor} className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-[1fr_2fr_auto] sm:items-end">
             <label className="text-sm">
               Unidade
               <select name="unidade" required className="input mt-1">
@@ -51,7 +51,7 @@ export default async function SetoresPage({ searchParams }: Props) {
               return (
                 <section key={u.id}>
                   <h2 className="font-semibold">{u.name}</h2>
-                  <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white">
+                  <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm">
                     {lista.map((s) => (
                       <li key={s.id} className="flex items-center justify-between px-4 py-2 text-sm">
                         <span>

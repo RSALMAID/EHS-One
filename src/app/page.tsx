@@ -37,7 +37,7 @@ export default function Home() {
 
       <section className="mt-20 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {MODULOS.map(([titulo, texto]) => (
-          <div key={titulo} className="rounded-lg border border-slate-200 bg-white p-5">
+          <div key={titulo} className="rounded-xl border border-slate-200 bg-white shadow-sm p-5">
             <h2 className="font-semibold">{titulo}</h2>
             <p className="mt-1 text-sm text-slate-600">{texto}</p>
           </div>

@@ -20,13 +20,13 @@ export default async function EmpresaPage({ searchParams }: Props) {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold">Empresa e unidades</h1>
+        <h1 className="titulo">Empresa e unidades</h1>
         <Erro mensagem={erro} />
       </div>
 
       <section>
         <h2 className="font-semibold">Dados da empresa</h2>
-        <form action={salvarEmpresa} className="mt-3 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-2">
+        <form action={salvarEmpresa} className="mt-3 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-2">
           <label className="text-sm">
             Razão social / nome
             <input name="nome" required defaultValue={empresa?.name ?? ""} className="input mt-1" disabled={!podeEditar} />
@@ -54,7 +54,7 @@ export default async function EmpresaPage({ searchParams }: Props) {
       <section>
         <h2 className="font-semibold">Unidades</h2>
         <p className="text-sm text-slate-600">Locais de trabalho: matriz, filiais, obras, galpões.</p>
-        <form action={adicionarUnidade} className="mt-3 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-[1fr_2fr_auto] sm:items-end">
+        <form action={adicionarUnidade} className="mt-3 grid gap-3 rounded-xl border border-slate-200 bg-white shadow-sm p-4 sm:grid-cols-[1fr_2fr_auto] sm:items-end">
           <label className="text-sm">
             Nome
             <input name="nome" required className="input mt-1" placeholder="Matriz" />
@@ -65,7 +65,7 @@ export default async function EmpresaPage({ searchParams }: Props) {
           </label>
           <button className="btn">Adicionar</button>
         </form>
-        <ul className="mt-3 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white">
+        <ul className="mt-3 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm">
           {(unidades ?? []).map((u) => (
             <li key={u.id} className="flex items-center justify-between gap-3 px-4 py-2 text-sm">
               <div>

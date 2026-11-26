@@ -29,7 +29,7 @@ export function Participantes({
     <section className="mt-6">
       <h2 className="font-semibold">Participantes e assinaturas</h2>
       <p className="text-xs text-slate-500">Cada pessoa assina no próprio celular, logada no Meu EHS.</p>
-      <ul className="mt-2 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white text-sm">
+      <ul className="mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm text-sm">
         {assinaturas.map((s) => (
           <li key={s.id} className="flex flex-wrap items-center justify-between gap-2 px-4 py-2">
             <span>
