@@ -8,6 +8,8 @@ export type Mes = {
   mes: number; // 0 a 11
   hht: number | null;
   trabalhadores: number | null;
+  eventos: number; // todos os eventos (acidentes, incidentes, quase acidentes, ambientais)
+  desvios: number;
   comLesao: number; // acidentes com e sem afastamento
   comAfastamento: number;
   dias: number; // perdidos + debitados
@@ -37,13 +39,13 @@ export async function indicadores(orgId: string, ano: number) {
     supabase.from("actions").select("status, due_date, closed_at").eq("organization_id", orgId),
     supabase
       .from("inspections")
-      .select("status, inspection_answers(answer)")
+      .select("status, inspected_on, inspection_answers(answer)")
       .eq("organization_id", orgId)
       .gte("inspected_on", ini)
       .lt("inspected_on", fim),
     supabase
       .from("dds_talks")
-      .select("id, dds_attendances(confirmed_at)")
+      .select("id, held_on, dds_attendances(confirmed_at)")
       .eq("organization_id", orgId)
       .gte("held_on", ini)
       .lt("held_on", fim),
@@ -53,6 +55,8 @@ export async function indicadores(orgId: string, ano: number) {
     mes,
     hht: null,
     trabalhadores: null,
+    eventos: 0,
+    desvios: 0,
     comLesao: 0,
     comAfastamento: 0,
     dias: 0,
@@ -70,6 +74,8 @@ export async function indicadores(orgId: string, ano: number) {
     // mês no fuso de Brasília
     const mes = Number(new Date(e.occurred_at).toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" }).slice(5, 7)) - 1;
     const m = meses[mes];
+    if (e.kind.startsWith("desvio")) m.desvios++;
+    else m.eventos++;
     if (e.kind === "acidente_com_afastamento" || e.kind === "acidente_sem_afastamento") m.comLesao++;
     if (e.kind === "acidente_com_afastamento") m.comAfastamento++;
     m.dias += (e.lost_days ?? 0) + (e.debited_days ?? 0);
@@ -107,6 +113,17 @@ export async function indicadores(orgId: string, ano: number) {
     conformidade: conformes + ncs ? Math.round((conformes / (conformes + ncs)) * 100) : null,
   };
 
+  // Por mês: conformidade das inspeções (%) e DDS realizados.
+  const conformidadeMes = MESES.map((_, i) => {
+    const r = (inspecoes ?? [])
+      .filter((x) => Number(x.inspected_on.slice(5, 7)) - 1 === i)
+      .flatMap((x) => (x.inspection_answers as { answer: string | null }[]) ?? []);
+    const c = r.filter((a) => a.answer === "conforme").length;
+    const n = r.filter((a) => a.answer === "nao_conforme").length;
+    return c + n ? Math.round((c / (c + n)) * 100) : null;
+  });
+  const ddsMes = MESES.map((_, i) => (dds ?? []).filter((d) => Number(d.held_on.slice(5, 7)) - 1 === i).length);
+
   const presencas = (dds ?? []).flatMap((d) => (d.dds_attendances as { confirmed_at: string | null }[]) ?? []);
   const ddsResumo = {
     realizados: dds?.length ?? 0,
@@ -122,5 +139,7 @@ export async function indicadores(orgId: string, ano: number) {
     acoes: acoesResumo,
     inspecoes: inspecoesResumo,
     dds: ddsResumo,
+    conformidadeMes,
+    ddsMes,
   };
 }

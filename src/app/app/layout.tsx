@@ -16,7 +16,7 @@ async function avisos(orgId: string, modulos: string[]): Promise<Aviso[]> {
   const h = hoje();
   const conta = async (q: PromiseLike<{ count: number | null }>) => (await q).count ?? 0;
   const base = (t: string) => supabase.from(t).select("id", { count: "exact", head: true }).eq("organization_id", orgId);
-  const [atrasadas, docs, aprs, pts] = await Promise.all([
+  const [atrasadas, docs, aprs, pts, legais] = await Promise.all([
     liberado(modulos, "acoes")
       ? conta(base("actions").not("status", "in", "(concluida,cancelada)").lt("due_date", h))
       : 0,
@@ -25,12 +25,16 @@ async function avisos(orgId: string, modulos: string[]): Promise<Aviso[]> {
       : 0,
     liberado(modulos, "apr_pt") ? conta(base("aprs").eq("status", "aguardando_aprovacao")) : 0,
     liberado(modulos, "apr_pt") ? conta(base("work_permits").eq("status", "solicitada")) : 0,
+    liberado(modulos, "requisitos_legais")
+      ? conta(base("legal_requirements").eq("applicable", true).in("status", ["nao_atende", "atende_parcial"]))
+      : 0,
   ]);
   return [
     { texto: "ações atrasadas", href: "/app/acoes/todas", n: atrasadas, grave: true },
     { texto: "documentos vencem em 30 dias", href: "/app/documentos", n: docs },
     { texto: "APRs aguardando aprovação", href: "/app/apr", n: aprs },
     { texto: "PTs aguardando liberação", href: "/app/pt", n: pts },
+    { texto: "requisitos legais com pendência", href: "/app/requisitos?situacao=nao_atende", n: legais, grave: true },
   ];
 }
 
